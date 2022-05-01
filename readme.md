@@ -1,3 +1,3 @@
 # Sharnn
 
-An excellent algorithm combining classical sponge structure and RNN.
+An excellent hash algorithm combining classical sponge structure and RNN.
