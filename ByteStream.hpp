@@ -9,7 +9,7 @@ private:
 
     inline static void check_positive(int param) {
         if (param <= 0) {
-            printf("Bad parameter. Length should be positive.");
+            printf("Bad parameter. Length should be positive.\n");
             assert(false);
         }
     }
@@ -74,6 +74,8 @@ public:
         delete pad_tail;
     }
 
+    void clear() { memset(data, 0, length); }
+
     int get_length() { return length; }
 
     std::string hex_string() {
@@ -101,8 +103,8 @@ public:
         if (copied) delete[] data;
     }
 
-#ifdef DEBUG
     static void test() {
+#ifdef DEBUG
         uint8_t data[4] = {0x54, 0x76, 0xa3, 0xff};
         ByteStream *bs_cp = ByteStream::copy_from(data, 3);
         ByteStream *bs_mv = ByteStream::move_from(data, 3);
@@ -127,6 +129,10 @@ public:
         assert(*bs_cp == *bs_mv);
         assert(*bs_cp != *zero);
         printf("EQ & NEQ test passed!\n");
-    }
+
+        delete bs_cp;
+        delete bs_mv;
+        delete zero;
 #endif
+    }
 };

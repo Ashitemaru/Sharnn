@@ -1,6 +1,5 @@
 #include "define.h"
-#include "ByteStream.hpp"
-#include "SpongeFunction.hpp"
+#include "util.hpp"
 
 void print_help() {
     printf("Welcome to SHARNN shell.\n");
@@ -35,12 +34,9 @@ std::string read_line() {
     return buf;
 }
 
-/**** FUNCTIONS DECL begin ****/
-std::string string_hash(std::string);
-std::string file_hash(std::string);
-/**** FUNCTIONS DECL end ****/
-
 int main() {
+    ByteStream::test();
+
     print_help();
     printf(">>> ");
 
@@ -48,7 +44,7 @@ int main() {
         std::string buf = read_line();
 
         // When the length of command is not 1,
-        // print instructions and continue
+        // print a new '>>>' and continue
         if (buf.length() != 1) {
             if (buf.length() > 1) printf("Invalid command!\n");
             printf(">>> ");
@@ -62,6 +58,13 @@ int main() {
             }
 
             case 'F': {
+                printf("... ");
+                std::string input = read_line();
+                if (input.length() == 0) {
+                    printf("Length of input file path cannot be 0. Stopped.\n");
+                } else {
+                    printf("SHARNN: %s\n", file_hash(input).c_str());
+                }
                 break;
             }
 
@@ -69,7 +72,7 @@ int main() {
                 printf("... ");
                 std::string input = read_line();
                 if (input.length() == 0) {
-                    printf("Length of input string cannot be 0.\n");
+                    printf("Length of input string cannot be 0. Stopped.\n");
                 } else {
                     printf("SHARNN: %s\n", string_hash(input).c_str());
                 }
