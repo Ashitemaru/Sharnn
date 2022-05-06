@@ -16,6 +16,6 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 SET(SOURCES
         main.cpp
-        SpongeFunction.cpp)
+        util.cpp)
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCES})
