@@ -29,14 +29,18 @@ public:
      */
     uint8_t *data;
 
-    static ByteStream *copy_from(uint8_t *_data, int _length) {
+    static ByteStream *copy_from_raw(uint8_t *_data, int _length) {
         check_positive(_length);
         uint8_t *buf = new uint8_t[_length];
         memcpy(buf, _data, _length);
         return new ByteStream(buf, _length, true);
     }
 
-    static ByteStream *move_from(uint8_t *_data, int _length) {
+    static ByteStream *copy_from(ByteStream *bs) {
+        return copy_from_raw(bs->data, bs->length);
+    }
+
+    static ByteStream *move_from_raw(uint8_t *_data, int _length) {
         check_positive(_length);
         return new ByteStream(_data, _length, false);
     }
@@ -106,8 +110,8 @@ public:
     static void test() {
 #ifdef DEBUG
         uint8_t data[4] = {0x54, 0x76, 0xa3, 0xff};
-        ByteStream *bs_cp = ByteStream::copy_from(data, 3);
-        ByteStream *bs_mv = ByteStream::move_from(data, 3);
+        ByteStream *bs_cp = ByteStream::copy_from_raw(data, 3);
+        ByteStream *bs_mv = ByteStream::move_from_raw(data, 3);
         ByteStream *zero = ByteStream::zeros(3);
         printf("Construction test passed!\n");
 

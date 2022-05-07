@@ -5,6 +5,9 @@
 
 class SpongeFunction {
 private:
+    /** @note: 'state' & these functions are all private,
+     *         even not visible to derived classes
+     */
     ByteStream *state;
 
     ByteStream *pad(ByteStream *input) {
@@ -25,7 +28,11 @@ private:
             for (int j = 0; j < (R >> 3); ++j)
                 state->data[j] ^= input->data[i * (R >> 3) + j];
 
-            F(state);
+#ifdef SAFE_DERIVE
+            wrapped_F(); // Compress
+#else
+            F(state); // Compress
+#endif
         }
     }
 
@@ -39,14 +46,28 @@ private:
                 ss << std::hex << std::setfill('0') << std::setw(2)
                    << (int) state->data[i];
 
-            F(state);
+#ifdef SAFE_DERIVE
+            wrapped_F(); // Compress
+#else
+            F(state); // Compress
+#endif
         }
 
         return ss.str();
     }
 
-    // The compress function, override it to get different Hash
+    /** @note: The compress function, override it to get different HASH
+     *  @param: A pointer to the state, you should convert the old data it points to into the new state
+     */
     virtual void F(ByteStream *) = 0;
+
+    void wrapped_F() {
+        ByteStream *new_state = ByteStream::copy_from(state);
+        F(new_state);
+        assert(new_state->get_length() == state->get_length());
+        delete state;
+        state = new_state;
+    }
 
 public:
     explicit SpongeFunction() {

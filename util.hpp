@@ -5,7 +5,7 @@
 
 class NaiveSponge : public SpongeFunction {
 private:
-    virtual void F(ByteStream *) override { }
+    virtual void F(ByteStream *bs) override { }
 } hash;
 
 std::string file_hash(std::string file_path) {
@@ -26,7 +26,7 @@ std::string file_hash(std::string file_path) {
         else buf[length] = ch;
     }
 
-    ByteStream *bs = ByteStream::move_from(buf, length);
+    ByteStream *bs = ByteStream::move_from_raw(buf, length);
     std::string res = hash.forward(bs);
     
     handle.close();
@@ -37,7 +37,7 @@ std::string file_hash(std::string file_path) {
 
 std::string string_hash(std::string input) {
     // TODO
-    ByteStream *bs = ByteStream::copy_from((uint8_t *) input.c_str(), input.length());
+    ByteStream *bs = ByteStream::copy_from_raw((uint8_t *) input.c_str(), input.length());
     std::string res = hash.forward(bs);
     delete bs;
     return res;
