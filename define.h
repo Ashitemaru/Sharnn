@@ -2,6 +2,7 @@
 
 #define DEBUG
 #define SAFE_DERIVE
+#define SIMPLE_ACTIVATE
 
 #include <cstdint>
 #include <cstring>
@@ -12,6 +13,7 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 #include <vector>
 
 #define MAX_READ_IN_LEN 65536  // In bytes.

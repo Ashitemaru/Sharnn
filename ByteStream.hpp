@@ -25,7 +25,7 @@ private:
         : data(_data), length(_length), copied(_copied) { }
 
 public:
-    /** @note I make it public so that we can use it freely
+    /** @note: I make it public so that we can use it freely
      */
     uint8_t *data;
 
@@ -52,8 +52,8 @@ public:
         return new ByteStream(buf, _length, true);
     }
 
-    /** @note This function will let the BS give up the ownership
-     *        of the original data array if the BS is constructed by moving.
+    /** @note: This function will let the BS give up the ownership
+     *         of the original data array if the BS is constructed by moving.
      */
     void append(ByteStream *tail) {
         int tail_length = tail->get_length();
@@ -68,14 +68,21 @@ public:
         length += tail_length;
     }
 
-    /** @note This function will let the BS give up the ownership
-     *        of the original data array if the BS is constructed by moving.
+    /** @note: This function will let the BS give up the ownership
+     *         of the original data array if the BS is constructed by moving.
      */
     void pad(int pad_length) {
         check_positive(pad_length);
         ByteStream *pad_tail = ByteStream::zeros(pad_length);
         append(pad_tail);
         delete pad_tail;
+    }
+
+    /** @warn: This function will not copy data
+     */
+    ByteStream *slice(int begin, int slice_len) {
+        int clamped_len = begin + slice_len > length ? length - begin : slice_len;
+        return ByteStream::move_from_raw(data + begin, clamped_len);
     }
 
     void clear() { memset(data, 0, length); }
@@ -129,6 +136,14 @@ public:
         assert(bs_mv->get_length() == 6);
         assert(bs_mv->hex_string() == "5476a3000000");
         printf("Padding & appending #2 test passed!\n");
+
+        ByteStream *slice_a = bs_cp->slice(1, 2);
+        assert(slice_a->hex_string() == "76a3");
+        ByteStream *slice_b = bs_cp->slice(2, 3);
+        assert(slice_b->hex_string() == "a30000");
+        delete slice_a;
+        delete slice_b;
+        printf("Slicing test passed!\n");
 
         assert(*bs_cp == *bs_mv);
         assert(*bs_cp != *zero);
