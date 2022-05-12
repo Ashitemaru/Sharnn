@@ -1,0 +1,15 @@
+1. 确定 ByteStream 转 int 的算法，填充相关函数
+2. [拓展] 编写 LSTM 相关
+3. [拓展] 编写多种海绵函数，如 NaiveSponge、NaiveRNNSponge、LSTMSponge，并在交互界面提供选项
+4. 跑通随机性测试
+5. [拓展] 编写 baseline，包括已有的海绵结构 Hash 或者 CNN baseline
+6. 处理较大文件不能一次申请过大缓冲区的问题
+7. 和 Pytorch RNN 跑对拍
+8. 现在的海绵结构似乎不是纯函数
+9. 报告
+
+[Holder] 7.
+[lambda]
+[c7w] 8.
+[xsun]
+[ayf]
