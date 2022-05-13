@@ -19,6 +19,10 @@ uint32_t __inline ctz(uint32_t value) {
 // More convenient API and todo SIMD optimization
 template <int n> class Bitset {
 public:
+  Bitset() : Bitset(0) {}
+
+  explicit Bitset(int filled_with) { std::fill(data, data + n, filled_with); }
+
   Bitset(byte *input, int k) { init_with(input, k); }
 
   template <int k>

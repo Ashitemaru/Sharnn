@@ -30,6 +30,8 @@ public:
     return finished;
   }
 
+  int get_block_size() const { return block_size; }
+
 private:
   std::istream &input;
   int block_size;
