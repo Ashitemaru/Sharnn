@@ -1,5 +1,6 @@
 #include "define.h"
 #include "util.hpp"
+#include "PaddedStream.hpp"
 
 void print_help() {
     printf("Welcome to SHARNN shell.\n");
