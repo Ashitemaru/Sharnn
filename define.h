@@ -9,6 +9,7 @@
 #include <cassert>
 #include <string>
 #include <cstdio>
+#include <cstring>
 #include <sstream>
 #include <iomanip>
 #include <iostream>

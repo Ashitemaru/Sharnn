@@ -15,10 +15,8 @@ private:
     }
 
     inline static char bits_to_hex_char(int bits) {
-        if (bits < 0) assert(false);
-        else if (bits < 10) return '0' + bits;
-        else if (bits < 16) return 'a' + bits - 10;
-        else assert(false);
+        assert(bits >= 0 && bits < 16);
+        return bits < 10 ? '0' + bits : 'a' + bits - 10;
     }
 
     ByteStream(uint8_t *_data, int _length, bool _copied)
