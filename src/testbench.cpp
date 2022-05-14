@@ -55,12 +55,11 @@ int main() {
         ss << (char) dist(rng);
     }
 
-    PaddedStream input_stream{ss, 136};
     RNNHash rnn_hash;
 
     std::chrono::steady_clock::time_point begin =
         std::chrono::steady_clock::now();
-    auto out = rnn_hash.hash(input_stream);
+    auto out = rnn_hash.hash(ss);
     std::chrono::steady_clock::time_point end =
         std::chrono::steady_clock::now();
 

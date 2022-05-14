@@ -14,3 +14,4 @@ SET(SOURCES
 ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCES})
 
 ADD_EXECUTABLE(testbench src/testbench.cpp)
+ADD_EXECUTABLE(main2 src/main2.cpp)

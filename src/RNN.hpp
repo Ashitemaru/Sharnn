@@ -12,7 +12,7 @@ public:
     }
 
     void forward(Bitset<b> &input, uint32_t *output) {
-        uint32_t msg[5], prev;
+        uint32_t msg[5], prev = 0;
         for (int i = 0; i < NEURON_N; i++) {
             for (int j = 0; j < 20; j++) {
                 msg[j >> 2] = (msg[j >> 2] << 8) | input.ptr()[20 * i + j];

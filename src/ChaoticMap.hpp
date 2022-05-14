@@ -18,9 +18,9 @@ public:
             return twoN - 1;
         } else if (x < twoN) {
             return ((twoN - ks) << N) / (twoN - q);
-        } else {
-            assert(false);
         }
+
+        return 0;
     }
 };
 
