@@ -1,7 +1,7 @@
 #pragma once
 
-#include "define.h"
 #include "ByteStream.hpp"
+#include "define.h"
 
 class SpongeFunction {
 private:
@@ -20,7 +20,8 @@ private:
     }
 
     /** @note: The compress function, override it to get different HASH
-     *  @param: A pointer to the state, you should convert the old data it points to into the new state
+     *  @param: A pointer to the state, you should convert the old data it
+     * points to into the new state
      */
     virtual void F(ByteStream *) = 0;
 
@@ -51,9 +52,9 @@ public:
                 state->data[j] ^= input->data[i * (R >> 3) + j];
 
 #ifdef SAFE_DERIVE
-            wrapped_F(); // Compress
+            wrapped_F();  // Compress
 #else
-            F(state); // Compress
+            F(state);  // Compress
 #endif
         }
     }
@@ -69,9 +70,9 @@ public:
                    << (int) state->data[i];
 
 #ifdef SAFE_DERIVE
-            wrapped_F(); // Compress
+            wrapped_F();  // Compress
 #else
-            F(state); // Compress
+            F(state);  // Compress
 #endif
         }
 

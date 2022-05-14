@@ -1,11 +1,12 @@
 #pragma once
 
-#include "SpongeFunction.hpp"
 #include "ByteStream.hpp"
+#include "SpongeFunction.hpp"
 
 class NaiveSponge : public SpongeFunction {
 private:
-    virtual void F(ByteStream *bs) override { }
+    virtual void F(ByteStream *bs) override {
+    }
 };
 
 enum SpongeType {
@@ -14,14 +15,16 @@ enum SpongeType {
 
 SpongeFunction *create_hash(SpongeType type) {
     switch (type) {
-        case SpongeType::Naive:
-            return new NaiveSponge();
-        default:
-            assert(false);
+    case SpongeType::Naive:
+        return new NaiveSponge();
+    default:
+        assert(false);
     }
 }
 
-std::string file_hash(std::string file_path, SpongeType type = SpongeType::Naive, int hash_len = HASH_OUT_LEN) {
+std::string file_hash(std::string file_path,
+                      SpongeType type = SpongeType::Naive,
+                      int hash_len = HASH_OUT_LEN) {
     SpongeFunction *hash = create_hash(type);
     FILE *fp = std::fopen(file_path.c_str(), "rb");
 
@@ -48,16 +51,19 @@ std::string file_hash(std::string file_path, SpongeType type = SpongeType::Naive
         hash->absorb(ByteStream::move_from_raw(buf, len));
     }
     fclose(fp);
-    
+
     std::string res = hash->squeeze(hash_len);
     delete hash;
     delete[] buf;
     return res;
 }
 
-std::string string_hash(std::string input, SpongeType type = SpongeType::Naive, int hash_len = HASH_OUT_LEN) {
+std::string string_hash(std::string input,
+                        SpongeType type = SpongeType::Naive,
+                        int hash_len = HASH_OUT_LEN) {
     SpongeFunction *hash = create_hash(type);
-    hash->absorb(ByteStream::copy_from_raw((uint8_t *) input.c_str(), input.length()));
+    hash->absorb(
+        ByteStream::copy_from_raw((uint8_t *) input.c_str(), input.length()));
     std::string res = hash->squeeze(hash_len);
     delete hash;
     return res;
