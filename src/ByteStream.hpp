@@ -20,7 +20,8 @@ private:
     }
 
     ByteStream(uint8_t *_data, int _length, bool _copied)
-        : data(_data), length(_length), copied(_copied) { }
+        : data(_data), length(_length), copied(_copied) {
+    }
 
 public:
     /** @note: I make it public so that we can use it freely
@@ -59,8 +60,10 @@ public:
         memcpy(buf, data, length);
         memcpy(buf + length, tail->data, tail_length);
 
-        if (copied) delete[] data;
-        else copied = true;
+        if (copied)
+            delete[] data;
+        else
+            copied = true;
 
         data = buf;
         length += tail_length;
@@ -79,13 +82,18 @@ public:
     /** @warn: This function will not copy data
      */
     ByteStream *slice(int begin, int slice_len) {
-        int clamped_len = begin + slice_len > length ? length - begin : slice_len;
+        int clamped_len =
+            begin + slice_len > length ? length - begin : slice_len;
         return ByteStream::move_from_raw(data + begin, clamped_len);
     }
 
-    void clear() { memset(data, 0, length); }
+    void clear() {
+        memset(data, 0, length);
+    }
 
-    int get_length() { return length; }
+    int get_length() {
+        return length;
+    }
 
     std::string hex_string() {
         std::string res = "";
@@ -98,18 +106,23 @@ public:
     }
 
     bool operator==(ByteStream &other) {
-        if (length != other.get_length()) return false;
+        if (length != other.get_length())
+            return false;
 
         for (int i = 0; i < length; ++i)
-            if (data[i] != other.data[i]) return false;
+            if (data[i] != other.data[i])
+                return false;
 
         return true;
     }
 
-    bool operator!=(ByteStream &other) { return !(*this == other); }
+    bool operator!=(ByteStream &other) {
+        return !(*this == other);
+    }
 
     ~ByteStream() {
-        if (copied) delete[] data;
+        if (copied)
+            delete[] data;
     }
 
     static void test() {
