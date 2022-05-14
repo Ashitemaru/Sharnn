@@ -6,15 +6,17 @@ public:
 };
 
 class DSTChaoticSystem : public ChaoticSystem {
-    int kssi = 0;
-    int q = 0;
+    uint32_t q, ks, kss;
     DSTmap<32> dst;
 
 public:
-    DSTChaoticSystem(int q, int k0) : q(q), kssi(k0) {
+    DSTChaoticSystem(uint32_t q, uint32_t k0, uint32_t ks, uint32_t us)
+        : q(q), ks(ks), kss(k0) {
+        while (us--) {
+            kss = dst(kss * ks, q);
+        }
     }
-    virtual int next() override {
-        this->kssi = this->dst(this->kssi, this->q);
-        return this->kssi;
+    int next() override {
+        return kss = dst(kss * ks, q);
     }
 };

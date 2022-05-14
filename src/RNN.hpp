@@ -7,8 +7,10 @@ template <int b, typename std::enable_if<b % 20 == 0, bool>::type = true>
 class RNN {
 public:
     static constexpr int NEURON_N = b / 20;
+    explicit RNN(ChaoticSystem *cs) : cs(cs) {
+    }
 
-    void forward(const Bitset<b> &input, uint32_t *output) {
+    void forward(Bitset<b> &input, uint32_t *output) {
         uint32_t msg[5], prev;
         for (int i = 0; i < NEURON_N; i++) {
             for (int j = 0; j < 20; j++) {
@@ -20,8 +22,8 @@ public:
 
 private:
     const int ITER_N = 20;
-    DSTmap<32> dst;
-    DPWLCmap<32> dpwlc;
+    DSTmap<31> dst{};
+    DPWLCmap<31> dpwlc{};
     ChaoticSystem *cs;
 
     uint32_t neuron(uint32_t *msg,

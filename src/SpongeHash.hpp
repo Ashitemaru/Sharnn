@@ -16,7 +16,7 @@ public:
 
     virtual ~SpongeHash() = 0;
 
-    virtual HM_t sponge_F(HM_t h) = 0;
+    virtual HM_t sponge_F(HM_t &h, uint32_t km) = 0;
 
     Out_t hash(PaddedStream &input) {
         assert(input.get_block_size() == r);
@@ -26,8 +26,10 @@ public:
         bool has_next;
         do {
             has_next = input.next_block(MB.ptr());
+            uint32_t km = block_count == 0 ? 0 : HM.lsb();
             HM ^= MB;
-            HM = sponge_F(HM);
+            HM = sponge_F(HM, km);
+            ++block_count;
         } while (has_next);
 
         // Squeezing
@@ -36,7 +38,7 @@ public:
             for (int j = 0; j < r; ++j) {
                 output.ptr()[i * r + j] = HM.ptr()[j];
             }
-            HM = sponge_F(HM);
+            HM = sponge_F(HM, HM.lsb());
         }
 
         return output;
@@ -44,4 +46,5 @@ public:
 
 private:
     HM_t HM{}, IV, MB{};
+    int block_count;
 };

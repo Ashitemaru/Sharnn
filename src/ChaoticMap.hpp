@@ -2,10 +2,10 @@
 // Discrete Skew Tent map
 template <int N>
 class DSTmap {
-    const int twoN = 1 << N;
+    const uint32_t twoN = 1 << N;
 
 public:
-    int operator()(int ks, int q) {
+    uint32_t operator()(uint32_t ks, uint32_t q) {
         assert(1 < q && q < twoN);
         assert(1 < ks && ks < twoN);
 
@@ -23,15 +23,15 @@ public:
 // Discrete Piecewise Linear Chaotic map
 template <int N>
 class DPWLCmap {
-    const int twoN = 1 << N;
-    const int twoN_1 = 1 << (N - 1);
+    const uint32_t twoN = 1 << N;
+    const uint32_t twoN_1 = 1 << (N - 1);
 
 public:
-    int operator()(int ks, int q) {
+    uint32_t operator()(uint32_t ks, uint32_t q) {
         assert(1 < q && q < twoN_1);
         assert(1 < ks && ks < twoN);
 
-        long long x = ks;
+        uint64_t x = ks;
         if (x <= q) {
             return (x << N) / q;
         } else if (x <= twoN_1) {
