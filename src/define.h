@@ -20,3 +20,5 @@
 #define HASH_OUT_LEN 80        // In bits.
 #define R 16                   // In bits.
 #define C 64                   // In bits.
+
+using byte = uint8_t;

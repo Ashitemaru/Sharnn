@@ -2,10 +2,7 @@
 
 #include "Bitset.hpp"
 
-template <int r,
-          int c,
-          int o,
-          typename std::enable_if<o % r == 0, bool>::type = true>
+template <int r, int c, int o>
 class SpongeHash {
 public:
     // Refer to the paper for what these abbreviations mean.

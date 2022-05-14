@@ -1,4 +1,5 @@
 #include "PaddedStream.hpp"
+#include "RNNHash.hpp"
 #include "SpongeHash.hpp"
 #include "define.h"
 #include "util.hpp"

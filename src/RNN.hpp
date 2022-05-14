@@ -1,96 +1,43 @@
-#pragma once
+#include "Bitset.hpp"
+#include "ChaoticSystem.hpp"
+#include "define.h"
 
-#include "ByteStream.hpp"
-
-/**
- * @note: It is a extremely simplified RNN
- *        which cannot handle even 2-dimension data & float.
- *        Good luck.
- */
-
-enum RNNType { Naive, LSTM };
-
-class RNNCellBase {
-protected:
-    static inline int relu(int x) {
-        return x > 0 ? x : 0;
-    }
-
-    static inline int tanh(int x) {
-        return (int) tanhf((float) x);
-    }
-
-public:
-    /** @param: x - the input
-     *  @param: h - the prev hidden state
-     *  @return: the output & the new hidden state
-     */
-    virtual int forward(int x, int h) = 0;
-};
-
-class NaiveRNNCell : public RNNCellBase {
-    int input_w;
-    int hidden_w;
-    int bias;
-
-public:
-    NaiveRNNCell(int _input_w, int _hidden_w, int _bias)
-        : input_w(_input_w), hidden_w(_hidden_w), bias(_bias) {
-    }
-
-    virtual int forward(int x, int h) override {
-#ifdef SIMPLE_ACTIVATE
-        return relu(input_w * x + hidden_w * h + bias);
-#else
-        return tanh(input_w * x + hidden_w * h + bias);
-#endif
-    }
-};
-
-class LSTMCell : public RNNCellBase {
-    // TODO: Maybe new members and new constructor
-    // Remember to modify the constructor of 'RNN' after rewrite this class
-public:
-    // TODO: Maybe fill in it?
-    virtual int forward(int x, int h) override {
-        return x;
-    }
-};
-
+template <int b, typename std::enable_if<b % 20 == 0, bool>::type = true>
 class RNN {
-    RNNCellBase *cell;
-    int hidden;
-    int init_hidden;
-
-    RNN(int _input_w,
-        int _hidden_w,
-        int _bias,
-        int _hidden = 0,
-        RNNType type = RNNType::Naive)
-        : hidden(_hidden), init_hidden(_hidden) {
-        if (type == RNNType::Naive)
-            cell = new NaiveRNNCell(_input_w, _hidden_w, _bias);
-        else if (type == RNNType::LSTM)
-            cell = new LSTMCell();
-        else
-            assert(false);
-    }
-
 public:
-    static RNN *from_byte_stream(ByteStream *bs) {
-    }
+    static constexpr int NEURON_N = b / 20;
 
-    const std::vector<int> &forward(const std::vector<int> &input_seq) {
-        std::vector<int> res;
-        for (int x : input_seq) {
-            hidden = cell->forward(x, hidden);
-            res.push_back(hidden);
+    void forward(const Bitset<b> &input, uint32_t *output) {
+        uint32_t msg[5], prev;
+        for (int i = 0; i < NEURON_N; i++) {
+            for (int j = 0; j < 20; j++) {
+                msg[j >> 2] = (msg[j >> 2] << 8) | input.ptr()[20 * i + j];
+            }
+            prev = output[i] = neuron(msg, prev, cs->next(), cs->next());
         }
-        hidden = init_hidden;  // Clear
-        return res;
     }
 
-    ~RNN() {
-        delete cell;
+private:
+    const int ITER_N = 20;
+    DSTmap<32> dst;
+    DPWLCmap<32> dpwlc;
+    ChaoticSystem *cs;
+
+    uint32_t neuron(uint32_t *msg,
+                    uint32_t prev,
+                    uint32_t q_dst,
+                    uint32_t q_dpwlc) {
+        uint32_t f1 = msg[0] * cs->next() + msg[1] * cs->next() +
+                      msg[2] * cs->next() + prev;
+        uint32_t f2 = msg[3] * cs->next() + msg[4] * cs->next() + prev;
+
+        for (int i = 0; i < ITER_N; i++) {
+            f1 = dst(f1, q_dst);
+        }
+        for (int i = 0; i < ITER_N; i++) {
+            f2 = dpwlc(f2, q_dpwlc);
+        }
+
+        return f1 ^ f2;
     }
 };
