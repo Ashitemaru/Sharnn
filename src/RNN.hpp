@@ -1,5 +1,6 @@
 #include "Bitset.hpp"
 #include "ChaoticSystem.hpp"
+#include "NonLinear.hpp"
 #include "define.h"
 
 template <int b, typename std::enable_if<b % 20 == 0, bool>::type = true>
