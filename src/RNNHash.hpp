@@ -1,12 +1,14 @@
-#include "ChaoticMap.hpp"
-#include "ChaoticSystem.hpp"
+#pragma once
+
+#include "NonLinear.hpp"
 #include "RNN.hpp"
 #include "SpongeHash.hpp"
 
 class RNNHash : public SpongeHash<136, 64, 32> {
 public:
-    ~RNNHash() override {
+    RNNHash() : SpongeHash(HM_t{}) {
     }
+    ~RNNHash() override = default;
     HM_t sponge_F(HM_t &h, uint32_t km) override {
         DSTChaoticSystem cs(cs_q, km, cs_ks, cs_us);
         RNN<200> rnn{&cs};

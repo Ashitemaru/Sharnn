@@ -1,6 +1,7 @@
+#pragma once
+
 #include "Bitset.hpp"
 #include "ChaoticSystem.hpp"
-#include "NonLinear.hpp"
 #include "define.h"
 
 template <int b, typename std::enable_if<b % 20 == 0, bool>::type = true>
@@ -22,8 +23,8 @@ public:
 
 private:
     const int ITER_N = 20;
-    DSTmap<31> dst{};
-    DPWLCmap<31> dpwlc{};
+    DSTmap<32> dst{};
+    DPWLCmap<32> dpwlc{};
     ChaoticSystem *cs;
 
     uint32_t neuron(uint32_t *msg,

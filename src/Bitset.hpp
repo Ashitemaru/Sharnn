@@ -1,5 +1,7 @@
+#pragma once
 #include <bitset>
 #include <cstdint>
+#include <iomanip>
 #include <sstream>
 using byte = uint8_t;
 
@@ -104,7 +106,7 @@ public:
         std::stringstream ss;
         ss << std::hex;
         for (int i = 0; i < n; i++) {
-            ss << data[i];
+            ss << std::setfill('0') << std::setw(2) << (uint32_t) data[i];
         }
         return ss.str();
     }

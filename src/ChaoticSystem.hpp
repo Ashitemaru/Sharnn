@@ -1,8 +1,9 @@
+#pragma once
 #include "ChaoticMap.hpp"
 
 class ChaoticSystem {
 public:
-    virtual int next() = 0;
+    virtual uint32_t next() = 0;
 };
 
 class DSTChaoticSystem : public ChaoticSystem {
@@ -16,7 +17,7 @@ public:
             kss = dst(kss * ks, q);
         }
     }
-    int next() override {
+    uint32_t next() override {
         return kss = dst(kss * ks, q);
     }
 };

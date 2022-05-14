@@ -1,3 +1,5 @@
+#pragma once
+
 template <int N, int O, typename std::enable_if<N % 5 == 0, bool>::type = true>
 class NonLinear {
 public:
@@ -44,14 +46,14 @@ private:
     void nl_8to8(uint32_t *d, uint32_t *h) {
         uint32_t t = d[7] + ch(d[4], d[5], d[6]) + sum_1(d[4]);
         uint32_t a = t + maj(d[0], d[1], d[2]) + sum_0(d[0]);
-        h[0] = a;
-        h[1] = d[0];
-        h[2] = d[1];
-        h[3] = d[2];
-        h[4] = d[3] + t;
-        h[5] = d[4];
-        h[6] = d[5];
         h[7] = d[6];
+        h[6] = d[5];
+        h[5] = d[4];
+        h[4] = d[3] + t;
+        h[3] = d[2];
+        h[2] = d[1];
+        h[1] = d[0];
+        h[0] = a;
     }
     static uint32_t maj(uint32_t a, uint32_t b, uint32_t c) {
         return (a & b) ^ (b & c) ^ (a & c);
