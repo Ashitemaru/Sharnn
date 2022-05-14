@@ -34,7 +34,7 @@ std::string read_line() {
     return buf;
 }
 
-int main() {
+int main(int argc, char** argv) {
     ByteStream::test();
 
     print_help();
