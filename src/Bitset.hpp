@@ -1,5 +1,7 @@
+#pragma once
 #include <bitset>
 #include <cstdint>
+#include <iomanip>
 #include <sstream>
 using byte = uint8_t;
 
@@ -24,10 +26,10 @@ public:
     }
 
     explicit Bitset(int filled_with) {
-        std::fill(data, data + n, filled_with);
+        std::fill_n(data, n, filled_with);
     }
 
-    Bitset(byte *input, int k) {
+    Bitset(const byte *input, int k) {
         init_with(input, k);
     }
 
@@ -43,7 +45,21 @@ public:
         return *this;
     }
 
+    Bitset(const Bitset<n> &other) : Bitset(other.ptr(), n) {
+    }
+
+    Bitset<n> &operator=(const Bitset<n> &other) {
+        if (data != other.data) {
+            std::copy_n(other.data, n, data);
+        }
+        return *this;
+    }
+
     byte *ptr() {
+        return data;
+    }
+
+    const byte *ptr() const {
         return data;
     }
 
@@ -104,14 +120,14 @@ public:
         std::stringstream ss;
         ss << std::hex;
         for (int i = 0; i < n; i++) {
-            ss << data[i];
+            ss << std::setfill('0') << std::setw(2) << (uint32_t) data[i];
         }
         return ss.str();
     }
 
 private:
     byte data[n]{};
-    void init_with(byte *input, int k) {
+    void init_with(const byte *input, int k) {
         int len = std::min(k, n);
         std::copy(input, input + len, data);
         std::fill(data + len, data + n, 0);
