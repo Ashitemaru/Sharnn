@@ -34,8 +34,6 @@ public:
     uint32_t operator()(uint32_t ks, uint32_t q) {
         uint64_t x = ks;
 
-        assert(0 < x && x < twoN);
-
         q %= twoN_1;
         if (x <= q) {
             return (x << N) / q;

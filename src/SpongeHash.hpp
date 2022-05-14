@@ -25,7 +25,7 @@ public:
 
     virtual ~SpongeHash() = default;
 
-    virtual HM_t sponge_F(HM_t &h, uint32_t km) = 0;
+    virtual void sponge_F(HM_t &h, uint32_t km) = 0;
 
     Out_t operator()(std::istream &input) {
         return hash(input);
@@ -45,7 +45,7 @@ public:
             finished = stream.next_block(MB.ptr());
             uint32_t km = last_perf.size == 0 ? 2333 : HM.lsb() + 1;
             HM ^= MB;
-            HM = sponge_F(HM, km);
+            sponge_F(HM, km);
             last_perf.size += r;
         } while (!finished);
 
@@ -56,7 +56,7 @@ public:
             int copy_len = std::min(r, o - out_len);
             std::copy(HM.ptr(), HM.ptr() + copy_len, output.ptr() + out_len);
             uint32_t km = HM.lsb() + 1;
-            HM = sponge_F(HM, km);
+            sponge_F(HM, km);
             out_len += copy_len;
         } while (out_len < o);
 
