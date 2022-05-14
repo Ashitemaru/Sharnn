@@ -8,9 +8,11 @@
 
 > GitHub Repo 地址：https://github.com/Ashitemaru/Sharnn
 
+
 [TOC]
 
 <!--more-->
+
 
 ## Introduction
 
@@ -46,7 +48,9 @@
 
 ​		这里的 **混沌神经系统** 作为海绵函数 $f$ 的状态转移函数，承担着接受密钥，将隐藏状态混淆的同时使得输出结果尽可能均匀的作用。**混沌系统(Chaotic System)** 接受上个阶段的输出密钥 $KM_{q-1}$ 作为发生参数，产生均匀的输出作为后续 **混沌神经网络(Chaotic Neural Network, CNN)** 各层的权重（Weights）与偏差（Biases）。这里的混沌神经网络采用了简单的全连接层的机制。
 
+
 ### Discrete Skew Tent Map
+
 
 ​		我们这里首先引入 Skew Tent Map [4] 的概念，它被广泛地应用于混沌系统的生成当中。Skew Tent Map 是一种迭代函数，它接受上一状态输入 $X(n)$，将其映射为：
 $$
@@ -198,6 +202,7 @@ $$
 
 
 
+
 ## Evalutaion
 
 ### Efficiency
@@ -220,6 +225,7 @@ $$
 
 
 
+
 ## References
 
 [1] LIU J, FU X. Spatiotemporal chaotic one-way hash function construction based on coupled tent maps[J]. Journal on communications, 2007, 28(6): 34.
@@ -230,9 +236,11 @@ $$
 
 [4] Hasler M, Maistrenko Y L. An introduction to the synchronization of chaotic systems: coupled skew tent maps[J]. IEEE Transactions on Circuits and Systems I: Fundamental Theory and Applications, 1997, 44(10): 856-866.
 
+
 [5] Penard W, van Werkhoven T. On the secure hash algorithm family[J]. Cryptography in context, 2008: 1-18.
 
 
 
 ## Appendix: Introduction to Codebase
 
+// TODO
