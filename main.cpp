@@ -1,102 +1,28 @@
-#include "define.h"
-#include "util.hpp"
+#include "src/RNNHash.hpp"
 
-void print_help() {
-    printf("Welcome to SHARNN shell.\n");
-    printf("Input: E - Show the example of SHARNN.\n");
-    printf("       I - Show the introduction of SHARNN.\n");
-    printf("       F - Input a file path and get its SHARNN.\n");
-    printf("       S - Input a string and get its SHARNN.\n");
-    printf("       H - Print this help.\n");
-}
+int main(int argc, char **argv) {
+    RNNHash::Out_t out;
+    RNNHash rnn_hash;
 
-void print_example() {
-    printf("We have no examples till now QAQ.\n");
-}
-
-void print_intro() {
-    printf("SHARNN is a conbination of traditional Sponge Structure Hash & "
-           "Recursive Neural Network(RNN).\n");
-    printf("The algorithm is the 2nd homework of Introduction to Modern Cryptogrophy.\n");
-    printf("Developed by Ashitemaru, c7w, lambda, xsun, ayf.\n");
-}
-
-/** @note: Read till a '\n', '\n' not included in the result string
- */
-std::string read_line() {
-    std::string buf = "";
-    char ch = '\0';
-    while (true) {
-        ch = getchar();
-        if (ch == '\n') break;
-        else buf.push_back(ch);
-    }
-    return buf;
-}
-
-int main(int argc, char** argv) {
-    ByteStream::test();
-
-    print_help();
-    printf(">>> ");
-
-    while (true) {
-        std::string buf = read_line();
-
-        // When the length of command is not 1,
-        // print a new '>>>' and continue
-        if (buf.length() != 1) {
-            if (buf.length() > 1) printf("Invalid command!\n");
-            printf(">>> ");
-            continue;
+    if (argc == 1) {
+        out = rnn_hash(std::cin);
+    } else if (argc == 3) {
+        if (strcmp(argv[1], "-f") == 0) {
+            std::ifstream file{argv[2], std::ios::binary};
+            out = rnn_hash(file);
+        } else if (strcmp(argv[1], "-s") == 0) {
+            std::istringstream str{argv[2]};
+            out = rnn_hash(str);
+        } else {
+            return -1;
         }
-
-        switch (buf[0]) {
-            case 'E': {
-                print_example();
-                break;
-            }
-
-            case 'F': {
-                printf("... ");
-                std::string input = read_line();
-                if (input.length() == 0) {
-                    printf("Length of input file path cannot be 0. Stopped.\n");
-                } else {
-                    printf("SHARNN: %s\n", file_hash(input).c_str());
-                }
-                break;
-            }
-
-            case 'S': {
-                printf("... ");
-                std::string input = read_line();
-                if (input.length() == 0) {
-                    printf("Length of input string cannot be 0. Stopped.\n");
-                } else {
-                    printf("SHARNN: %s\n", string_hash(input).c_str());
-                }
-                break;
-            }
-
-            case 'I': {
-                print_intro();
-                break;
-            }
-            
-            case 'H': {
-                print_help();
-                break;
-            }
-
-            default: {
-                printf("Invalid command!\n");
-                break;
-            }
-        }
-
-        printf(">>> ");
+    } else {
+        return -1;
     }
 
-    return 0;
+    auto perf = rnn_hash.last_perf_info();
+    std::cout << "Hash = " << out.to_hex_string() << std::endl;
+    std::cout << "Size = " << perf.size << " bytes" << std::endl;
+    std::cout << "Time = " << perf.time << " ms" << std::endl;
+    std::cout << "Speed = " << perf.speed << " Mbps" << std::endl;
 }

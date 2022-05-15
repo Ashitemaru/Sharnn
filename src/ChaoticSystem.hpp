@@ -1,6 +1,7 @@
 #pragma once
+
+#include "../include/define.h"
 #include "ChaoticMap.hpp"
-#include "define.h"
 
 class ChaoticSystem {
 public:

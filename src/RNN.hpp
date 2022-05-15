@@ -1,14 +1,7 @@
 #pragma once
 
+#include "../include/define.h"
 #include "Bitset.hpp"
-#include "ChaoticSystem.hpp"
-#include "define.h"
-
-#ifndef NDEBUG
-#define LOG(...) printf(__VA_ARGS__)
-#else
-#define LOG
-#endif
 
 template <int b, typename std::enable_if<b % 20 == 0, bool>::type = true>
 class RNN {
