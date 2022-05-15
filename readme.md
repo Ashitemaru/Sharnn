@@ -200,7 +200,15 @@ $$
 
 ### Efficiency
 
-// TODO
+我们对于大小分别为 $1$ MB, $2$ MB, $4$ MB, $8$ MB, $\cdots$, $1$ GB 的数据做了效率检验（详见单元测试的 test3 程序），得出的结果如下：
+
+![1](https://s2.loli.net/2022/05/15/VaNOWKe8pvQCcXL.png)
+
+我们的实验环境为：
+
++ 处理器 Intel64 Family 6 Model 141 Stepping 1 GenuineIntel ~2688 Mhz（Intel-i5）
++ 内存：16 GB
++ 操作系统：Windows WSL2（Ubuntu 20.04）
 
 ### Security
 
