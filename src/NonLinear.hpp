@@ -21,9 +21,7 @@ public:
             h[0][i] = h[1][i] = 0;
         }
         for (int i = 0; i < N; i++) {
-            uint64_t mul = ((uint64_t) cs->next()) * input[i];
-            mul ^= (mul >> 32);
-            h[0][i % 5] ^= mul;
+            h[0][i % 5] ^= mul(cs->next(), input[i]);
         }
 
         for (int i = 0; i < nr; i++) {
@@ -49,18 +47,6 @@ private:
         h[5] = d[0] ^ d[1] ^ t;
         h[6] = d[1] ^ d[2] ^ t;
         h[7] = d[2] ^ d[3] ^ t;
-    }
-    void nl_8to8(uint32_t *d, uint32_t *h) {
-        uint32_t t = d[7] + ch(d[4], d[5], d[6]) + sum_1(d[4]);
-        uint32_t a = t + maj(d[0], d[1], d[2]) + sum_0(d[0]);
-        h[7] = d[6];
-        h[6] = d[5];
-        h[5] = d[4];
-        h[4] = d[3] + t;
-        h[3] = d[2];
-        h[2] = d[1];
-        h[1] = d[0];
-        h[0] = a;
     }
     static uint32_t maj(uint32_t a, uint32_t b, uint32_t c) {
         return (a & b) ^ (b & c) ^ (a & c);
