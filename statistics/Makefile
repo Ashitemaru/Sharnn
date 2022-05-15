@@ -1,3 +1,3 @@
 gen:
-	g++ sample.cpp -o main
+	g++ diffusion.cpp -o main
 	# ./main

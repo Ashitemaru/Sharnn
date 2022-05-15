@@ -4,7 +4,7 @@
 #include "RNN.hpp"
 #include "SpongeHash.hpp"
 
-class RNNHash : public SpongeHash<136, 64, 10> {
+class RNNHash : public SpongeHash<136, 64, 200> {
 public:
     RNNHash() : SpongeHash(HM_t{}) {
     }

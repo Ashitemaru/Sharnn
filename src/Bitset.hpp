@@ -144,6 +144,16 @@ public:
         return ret;
     }
 
+    std::size_t one_count() {
+        std::size_t count {0};
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (data[i] & (1 << j)) count++;
+            }
+        }
+        return count;
+    }
+
 private:
     byte data[n]{};
     void init_with(const byte *input, int k) {
