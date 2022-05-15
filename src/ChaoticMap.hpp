@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 // Discrete Skew Tent map
 template <int N>
 class DSTmap {

@@ -91,6 +91,19 @@ public:
         return *this;
     }
 
+    bool operator==(const Bitset<n> &other) {
+        for (int i = 0; i < n; i++) {
+            if (data[i] != other.data[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool operator!=(const Bitset<n> &other) {
+        return !(*this == other);
+    }
+
     // least significant bit
     int lsb() {
         int ans = 0;

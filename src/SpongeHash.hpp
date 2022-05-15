@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <chrono>
 
 #include "Bitset.hpp"
 #include "PaddedStream.hpp"
@@ -77,6 +78,5 @@ public:
 
 private:
     HM_t HM{}, IV, MB{};
-    int block_count = 0;
     PerfInfo last_perf{};
 };

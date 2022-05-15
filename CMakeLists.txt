@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.10.1)
 project(SHA-RNN)
 
 IF (NOT CMAKE_BUILD_TYPE)
@@ -8,10 +8,15 @@ ENDIF ()
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-SET(SOURCES
-        src/main.cpp)
+SET(SOURCES src/main.cpp)
 
-ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCES})
+ADD_EXECUTABLE(main src/main.cpp)
 
-ADD_EXECUTABLE(testbench src/testbench.cpp)
-ADD_EXECUTABLE(main2 src/main2.cpp)
+function(ADD_TEST TEST_NAME)
+    ADD_EXECUTABLE(${TEST_NAME} test/${TEST_NAME}.cpp)
+    TARGET_INCLUDE_DIRECTORIES(${TEST_NAME} PUBLIC src)
+endfunction()
+
+ADD_TEST(test1)
+ADD_TEST(test2)
+ADD_TEST(test3)
