@@ -23,7 +23,5 @@ endfunction()
 ADD_TEST(test1)
 ADD_TEST(test2)
 ADD_TEST(test3)
-<<<<<<< HEAD
-=======
 ADD_TEST(test4)
->>>>>>> origin/master
+ADD_TEST(test_diffusion)

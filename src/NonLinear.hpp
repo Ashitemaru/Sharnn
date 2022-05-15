@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <cstdint>
-#include "define.h"
+#include "../include/define.h"
 #include <type_traits>
 #include <bitset>
 
@@ -15,17 +15,6 @@ public:
     explicit NonLinear(int nr, ChaoticSystem *cs) : nr(nr), cs(cs) {
     }
 
-<<<<<<< HEAD
-    void forward(uint32_t *input, uint32_t *output) {
-
-        uint32_t h[INPUT_N * 8];
-        for (int i = 0; i < INPUT_N; i++) {
-            auto i_ptr = input + i * 5, o_ptr = h + i * 8;
-            nl_5to8(i_ptr, o_ptr);
-            for (int j = 0; j < nr; j++) {
-                nl_8to8(o_ptr, o_ptr);
-            }
-=======
     void forward(const uint32_t *input, uint32_t *output) {
         uint32_t h[2][8];
         for (int i = 0; i < 8; i++) {
@@ -39,7 +28,6 @@ public:
 
         for (int i = 0; i < nr; i++) {
             nl_5to8(h[i % 2], h[(i + 1) % 2]);
->>>>>>> origin/master
         }
         for (int count = 0, i = 0; count < O; count += 8, i++) {
             int copy_count = std::min(8, O - count);
