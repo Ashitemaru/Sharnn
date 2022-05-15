@@ -1,6 +1,8 @@
 #pragma once
+#include <cstdint>
+#include <iostream>
 
-#include "../include/define.h"
+using byte = uint8_t;
 
 // multi-rate padding
 class PaddedStream {
@@ -17,11 +19,7 @@ public:
         finished = true;
         if (read_count < block_size - 1) {
             int i = read_count;
-<<<<<<< HEAD
             block[i] = 0b01100000;
-=======
-            block[i] = 0b01100000; ++i;
->>>>>>> origin/master
             for (; i < block_size - 1; ++i) {
                 block[i] = 0;
             }
@@ -31,14 +29,6 @@ public:
         } else {
             finished = false;
         }
-
-        // Debug: print the block[0:block_size] to stdout
-//        for (int i = 0; i < block_size; ++i) {
-//            std::cout << std::bitset<8>(block[i]) << " ";
-//        }
-//        std::cout << std::endl;
-
-
         return finished;
     }
 

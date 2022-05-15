@@ -14,7 +14,7 @@ public:
     void sponge_F(HM_t &h, uint32_t km) override {
         DSTChaoticSystem cs(cs_q, km, cs_ks, cs_us);
         RNN<200> rnn{&cs};
-        NonLinear<10, 50> nl{nl_nr};
+        NonLinear<10, 50> nl{nl_nr, &cs};
 
         rnn.forward(h, wo);
 
