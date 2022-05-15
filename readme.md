@@ -93,7 +93,7 @@ $$
 
   + 哈希函数输出长度：80 比特（对单次输出做高位截断）
 
-+ 用户可以设置的参数，以及我们的预置配置
++ 用户可以设置的参数，以及我们的预置配置，用户可以通过修改源码重新编译得到新的配置
 
   + 混沌系统偏移量 $Q$：0x789ABCDE
 
@@ -136,7 +136,7 @@ $$
 
 #### Chaotic Neural Network
 
-​		我们的 Chaotic Neural Network 采用 RNN 架构。下面对其进行介绍。每个 RNN 架构配有一个混沌状态发生器 $CS$，我们下面用记号 $CS$ 表示进行对混沌状态映射函数进行一次迭代后得到的新的结果。
+​		我们的 Chaotic Neural Network 采用 RNN 架构。下面对其进行介绍。每个 RNN 架构配有一个混沌状态发生器 $CS$，我们下面用记号 $X \sim CS$ 表示进行对混沌状态映射函数进行一次迭代后得到的新的结果，或者说对混沌状态发生器做一次采样后得到的结果 $X$。
 
 ​		由于我们指定了 RNN 架构的输入为 $b = 200$ 字节 $= 1600$ 比特，所以我们将输入的 1600 比特切分成 10 份，分别记为 $I_1, I_2, \cdots, I_{10}$，每份 160 比特，记 $I_i = J_{i1}J_{i2}J_{i3}J_{i4}J_{i5}$，每个 $J_{ij}$ 为一个小消息分组，长度为 32 比特，视为无符号整数参与运算。
 
@@ -150,16 +150,16 @@ $$
 
 #### RNN Cell
 
-![image-20220515005733937](https://s2.loli.net/2022/05/15/g5TF4chKOfyl2RU.png)
-
-<center>Figure 3.2.3.1: RNN Cell 计算流程</center>
-
-​		每一个 RNN 神经元接受 160 个比特的串作为输入，这里将其记为 $I_i = J_{i1}J_{i2}J_{i3}J_{i4}J_{i5}$，其中 $J_{ij}$ 是一个 32 比特的串。我们令 $Q_1 \leftarrow CS, Q_2 \leftarrow CS$，然后令：
+​		每一个 RNN 神经元接受 160 个比特的串作为输入，这里将其记为 $I_i = J_{i1}J_{i2}J_{i3}J_{i4}J_{i5}$，其中 $J_{ij}$ 是一个 32 比特的串。我们令 $Q_1 \sim CS, Q_2 \sim CS$，然后令 $W_i \sim CS , 1\le i\le5$：
 $$
-F_1 \leftarrow J_{i1} \times CS + J_{i2} \times CS + J_{i3} \times CS + prev \\
-F_2 \leftarrow J_{i4} \times CS + J_{i5} \times CS
+F_1 \leftarrow J_{i1} \times W_1 + J_{i2} \times W_2 + J_{i3} \times W_3 + prev \\
+F_2 \leftarrow J_{i4} \times W_4 + J_{i5} \times W_5
 $$
 接着，分别迭代 20 次 $F_1 \leftarrow \phi_{Q_2}(F_1)$，$F_2 \leftarrow \rho_{Q_1}(F_2)$，这里 $\phi = \text{DSTMap}$，$\rho = \text{DPWLCMap}$，最后我们返回 $F_1 \oplus F_2$，这里返回长度为 32 比特。
+
+![RNNCell.drawio](https://s2.loli.net/2022/05/15/1akRr4t8vbZTKqA.png)
+
+<center>Figure 3.2.3.1: RNN Cell 计算流程</center>
 
 #### Non-linear Cell
 
@@ -254,8 +254,6 @@ bin/SHA-RNN # (1) Input Mode
 bin/SHA-RNN -f <file_path> # (2) Hash file
 bin/SHA-RNN -s <string> # (3) Hash string
 ```
-
-
 
 实验框架介绍如下：
 
