@@ -20,7 +20,7 @@ public:
         if (read_count < block_size - 1) {
             int i = read_count;
             block[i] = 0b01100000;
-            for (; i < read_count - 1; ++i) {
+            for (; i < block_size - 1; ++i) {
                 block[i] = 0;
             }
             block[i] = 0b00000001;

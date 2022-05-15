@@ -4,38 +4,55 @@
 #include <cstdint>
 #include <type_traits>
 
+#include "ChaoticSystem.hpp"
+
+
+
 template <int N, int O, typename std::enable_if<N % 5 == 0, bool>::type = true>
 class NonLinear {
 public:
     static constexpr int INPUT_N = N / 5;
 
-    explicit NonLinear(int nr) : nr(nr) {
+    explicit NonLinear(int nr, ChaoticSystem *cs) : nr(nr), cs(cs) {
     }
 
-    void forward(uint32_t *input, uint32_t *output) {
-        uint32_t h[INPUT_N * 8];
-        for (int i = 0; i < INPUT_N; i++) {
-            auto i_ptr = input + i * 5, o_ptr = h + i * 8;
-            nl_5to8(i_ptr, o_ptr);
-            for (int j = 0; j < nr; j++) {
-                nl_8to8(o_ptr, o_ptr);
-            }
+    void forward(const uint32_t *input, uint32_t *output) {
+        uint32_t h[2][8];
+        for (int i = 0; i < 8; i++) {
+            h[0][i] = h[1][i] = 0;
         }
-        int out_count = 0;
-        while (out_count < O) {
-            int count = std::min(O - out_count, INPUT_N * 8);
-            std::copy(h, h + count, output);
-            output += count;
-            out_count += count;
-            for (int i = 0; i < INPUT_N; i++) {
-                auto h_ptr = h + i * 8;
-                nl_8to8(h_ptr, h_ptr);
-            }
+        for (int i = 0; i < N; i++) {
+            uint64_t mul = ((uint64_t) cs->next()) * input[i];
+            mul ^= (mul >> 32);
+            h[0][i % 5] ^= mul;
         }
+        for (int i = 0; i < 5; i++) {
+            LOG("%08x ", h[0][i]);
+        }
+        LOG("\n");
+        for (int i = 0; i < nr; i++) {
+            nl_5to8(h[i % 2], h[(i + 1) % 2]);
+            for (int j = 0; j < 8; j++) {
+                LOG("%08x ", h[(i + 1) % 2][j]);
+            }
+            LOG("\n");
+        }
+        for (int count = 0, i = 0; count < O; count += 8, i++) {
+            int copy_count = std::min(8, O - count);
+            std::copy_n(h[(i + nr) % 2], copy_count, output + count);
+            nl_5to8(h[(i + nr) % 2], h[(i + nr + 1) % 2]);
+        }
+
+        LOG("Non-Linear Layer output: ");
+        for (int i = 0; i < O; i++) {
+            LOG("%08x ", output[i]);
+        }
+        LOG("\n");
     }
 
 private:
     int nr;
+    ChaoticSystem *cs;
     void nl_5to8(uint32_t *d, uint32_t *h) {
         uint32_t t = ch(d[1], d[2], d[3]) ^ d[4] ^ sum_1(d[3]);
         h[0] = d[0] ^ t ^ maj(d[1], d[2], d[3]) ^ sum_0(d[1]);
