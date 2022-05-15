@@ -6,12 +6,6 @@
 #include "Bitset.hpp"
 #include "PaddedStream.hpp"
 
-#ifndef NDEBUG
-#define LOG(...) printf(__VA_ARGS__)
-#else
-#define LOG
-#endif
-
 template <int r, int c, int o>
 class SpongeHash {
 public:

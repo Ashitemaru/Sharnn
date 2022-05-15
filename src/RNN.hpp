@@ -4,12 +4,6 @@
 #include "Bitset.hpp"
 #include "ChaoticSystem.hpp"
 
-#ifndef NDEBUG
-#define LOG(...) printf(__VA_ARGS__)
-#else
-#define LOG
-#endif
-
 template <int b, typename std::enable_if<b % 20 == 0, bool>::type = true>
 class RNN {
 public:
@@ -18,7 +12,7 @@ public:
     }
 
     void forward(Bitset<b> &input, uint32_t *output) {
-        uint32_t msg[5], prev = 0;
+        uint32_t msg[5], prev = cs->next();
         for (int i = 0; i < NEURON_N; i++) {
             for (int j = 0; j < 20; j++) {
                 msg[j >> 2] = (msg[j >> 2] << 8) | input.ptr()[20 * i + j];
