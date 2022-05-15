@@ -207,15 +207,42 @@ $$
 
 ### Efficiency
 
-// TODO
+测试环境
+
+对不同数据量的处理速度进行了测试，结果如下。
 
 ### Security
 
-// TODO
+#### Random Number Testing
 
-### Ablation Tests
+​		我们使用NIST提供的 [Statistical Test Suite](https://csrc.nist.gov/Projects/Random-Bit-Generation/Documentation-and-Software) 对哈希结果的随机性进行检测。
 
-我们在实验框架中分模块编写了单元测试，下面列举一下测试的结果。
+​		首先生成哈希序列。在 $[0,2^{31}-1)$ 中从零开始均匀选取 $2^{21}$ 个数字，将数字对应的 $32$ 位整数作为输入进行哈希，得到 $20MB$ 输出。使用  NIST Statistical Test Suite 基于多种度量进行随机性测试。默认参数选择 $n=1,500,000$ 可符合大部分测试的要求，按文档[6] 要求使用其他参数的，在下表最后一列注明。
+
+| 编号 | 测试类型                       | 通过率 | p值均匀性检验 | 非默认参数                      |
+| ---- | ------------------------------ | ------ | ------------- | ------------------------------- |
+| 01   | Frequency                      |        |               | -                               |
+| 02   | Block Frequency                |        |               | $n=8000,M=80$                   |
+| 03   | Cumulative Sums                |        |               | -                               |
+| 04   | Runs                           |        |               | -                               |
+| 05   | Longest Run of Ones            |        |               | -                               |
+| 06   | Rank                           |        |               | -                               |
+| 07   | Discrete Fourier Transform     |        |               | -                               |
+| 08   | Nonperiodic Template Matchings |        |               | $n=8000$                        |
+| 09   | Overlapping Template Matchings |        |               | $m=10$                          |
+| 10   | Universal Statistical          |        |               | $n=3,000,000$，此时 $L=8$       |
+| 11   | Approximate Entropy            |        |               | $m=\lfloor \log_2 n \rfloor -6$ |
+| 12   | Random Excursions              |        |               | -                               |
+| 13   | Random Excursions Variant      |        |               | -                               |
+| 14   | Serial                         |        |               | $m=\lfloor \log_2 n \rfloor -3$ |
+| 15   | Linear Complexity              |        |               | -                               |
+
+​		在测试时，将 $20MB$ 的哈希输出按 $n=1,500,000$ 进行拆分
+
+
+#### Diffusion Test
+
+
 
 #### DSTMap
 
@@ -236,8 +263,9 @@ $$
 
 [4] Hasler M, Maistrenko Y L. An introduction to the synchronization of chaotic systems: coupled skew tent maps[J]. IEEE Transactions on Circuits and Systems I: Fundamental Theory and Applications, 1997, 44(10): 856-866.
 
-
 [5] Penard W, van Werkhoven T. On the secure hash algorithm family[J]. Cryptography in context, 2008: 1-18.
+
+[6] Bassham, L. , Rukhin, A. , Soto, J. , Nechvatal, J. , Smid, M. , Leigh, S. , Levenson, M. , Vangel, M. , Heckert, N. and Banks, D. (2010), A Statistical Test Suite for Random and Pseudorandom Number Generators for Cryptographic Applications, Special Publication (NIST SP), National Institute of Standards and Technology, Gaithersburg, MD.
 
 
 
