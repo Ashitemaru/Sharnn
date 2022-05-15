@@ -111,6 +111,12 @@ public:
         return ss.str();
     }
 
+    std::string to_bytes() {
+        std::string ret;
+        ret.insert(0, (char *)data, n);
+        return ret;
+    }
+
 private:
     byte data[n]{};
     void init_with(byte *input, int k) {
