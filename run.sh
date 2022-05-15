@@ -7,5 +7,5 @@ fi
 mkdir -p build
 cd build
 cmake ..
-make -j
+cmake --build . --config Release
 cd ..

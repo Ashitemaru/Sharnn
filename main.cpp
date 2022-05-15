@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
     RNNHash rnn_hash;
 
     if (argc == 1) {
+
         std::cout << "You are entering input mode! After you finished "
                      "inputting, press ^D to exit!\n";
         out = rnn_hash(std::cin);

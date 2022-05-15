@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../include/define.h"
 #include "ChaoticMap.hpp"
 
 class ChaoticSystem {
@@ -15,10 +16,10 @@ public:
     DSTChaoticSystem(uint32_t q, uint32_t k0, uint32_t ks, uint32_t us)
         : q(q), ks(ks), kss(k0) {
         while (us--) {
-            kss = dst(kss * ks, q);
+            kss = dst(mul(kss, ks), q);
         }
     }
     uint32_t next() override {
-        return kss = dst(kss * ks, q);
+        return kss = dst(mul(kss, ks), q);
     }
 };
