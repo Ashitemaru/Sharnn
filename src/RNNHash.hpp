@@ -17,20 +17,10 @@ public:
         NonLinear<10, 50> nl{nl_nr};
 
         rnn.forward(h, wo);
-        std::cout << "\n begin rnn fwd" ;
-        for (uint32_t i = 0; i < 10;++i) {
-            std::cout << std::bitset<32>(wo[i])  << " ";
-        }
-        std::cout << "\n end of rnn fwd" << std::endl;
 
         shift(wo, 140, 200);
 
         nl.forward(wo, out);
-        std::cout << "start of non-linear rnn fwd" << std::endl;
-        for (uint32_t i = 0; i < 50;++i) {
-            std::cout << std::bitset<32>(out[i])  << " ";
-        }
-        std::cout << "\n end of non-linear rnn fwd" << std::endl;
 
         for (int i = 0; i < 50; i++) {
             h.ptr()[i * 4 + 0] = (out[i] & 0xFF000000) >> 24;

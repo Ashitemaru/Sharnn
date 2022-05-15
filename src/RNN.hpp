@@ -1,8 +1,8 @@
 #pragma once
 
+#include "../include/define.h"
 #include "Bitset.hpp"
 #include "ChaoticSystem.hpp"
-#include "../include/define.h"
 
 template <int b, typename std::enable_if<b % 20 == 0, bool>::type = true>
 class RNN {
