@@ -146,7 +146,7 @@ $$
 
 ​		首先设 $prev \leftarrow 0$ 作为 RNN 的隐藏状态，然后对于 10 份消息分组，我们依次将 $I_i$ 与 $prev$ 输入 RNN Cell，得到 160 比特的消息输出 $O_i$ 与新的状态 $prev$。最后，我们将 10 份消息的输出 $\{O_i\}_{i=1}^{10}$ 连接起来，就得到了 RNN Cell Layer 的输出 320 比特。
 
-​		然后我们将 RNN Cell Layer 输出的 320 比特循环左移 192 位，经过非线性激活层，便得到这次 RNN 层海绵函数状态转移的终态的 1600 比特。
+​		然后我们将 RNN Cell Layer 输出的 320 比特经过非线性激活层，便得到这次 RNN 层海绵函数状态转移的终态的 1600 比特。
 
 #### RNN Cell
 
@@ -219,25 +219,30 @@ $$
 
 ​		首先生成哈希序列。在 $[0,2^{31}-1)$ 中从零开始均匀选取 $2^{21}$ 个数字，将数字对应的 $32$ 位整数作为输入进行哈希，得到 $20MB$ 输出。使用  NIST Statistical Test Suite 基于多种度量进行随机性测试。默认参数选择 $n=1,500,000$ 可符合大部分测试的要求，按文档[6] 要求使用其他参数的，在下表最后一列注明。
 
-| 编号 | 测试类型                       | 通过率 | p值均匀性检验 | 非默认参数                      |
-| ---- | ------------------------------ | ------ | ------------- | ------------------------------- |
-| 01   | Frequency                      |        |               | -                               |
-| 02   | Block Frequency                |        |               | $n=8000,M=80$                   |
-| 03   | Cumulative Sums                |        |               | -                               |
-| 04   | Runs                           |        |               | -                               |
-| 05   | Longest Run of Ones            |        |               | -                               |
-| 06   | Rank                           |        |               | -                               |
-| 07   | Discrete Fourier Transform     |        |               | -                               |
-| 08   | Nonperiodic Template Matchings |        |               | $n=8000$                        |
-| 09   | Overlapping Template Matchings |        |               | $m=10$                          |
-| 10   | Universal Statistical          |        |               | $n=3,000,000$，此时 $L=8$       |
-| 11   | Approximate Entropy            |        |               | $m=\lfloor \log_2 n \rfloor -6$ |
-| 12   | Random Excursions              |        |               | -                               |
-| 13   | Random Excursions Variant      |        |               | -                               |
-| 14   | Serial                         |        |               | $m=\lfloor \log_2 n \rfloor -3$ |
-| 15   | Linear Complexity              |        |               | -                               |
+| 编号 | 测试类型                       | 通过率      | p值均匀性    | 非默认参数                      |
+| ---- | ------------------------------ | ----------- | ------------ | ------------------------------- |
+| 01   | Frequency                      | 111/111     | 0.580520     | -                               |
+| 02   | Block Frequency                | 20758/20971 | 0.273558     | $n=8000,M=80$                   |
+| 03   | Cumulative Sums                | 2/2$^1$     | 通过$^1$     | -                               |
+| 04   | Runs                           | 111/111     | 0.263452     | -                               |
+| 05   | Longest Run of Ones            | 109/111     | 0.656043     | -                               |
+| 06   | Rank                           | 109/111     | 0.328861     | -                               |
+| 07   | Discrete Fourier Transform     | 111/111     | 0.674920     | -                               |
+| 08   | Nonperiodic Template Matchings | 0/148$^1$   | 不通过$^1$   | $n=8000$                        |
+| 09   | Overlapping Template Matchings | 111/111     | 0.003401     | $m=10$                          |
+| 10   | Universal Statistical          | 54/55       | 0.719747     | $n=3,000,000$，此时 $L=8$       |
+| 11   | Approximate Entropy            | 110/111     | 0.000086$^2$ | $m=\lfloor \log_2 n \rfloor -6$ |
+| 12   | Random Excursions              | 8/8$^1$     | 通过$^1$     | -                               |
+| 13   | Random Excursions Variant      | 18/18$^1$   | 通过$^1$     | -                               |
+| 14   | Serial                         | 2/2$^1$     | 通过$^1$     | $m=\lfloor \log_2 n \rfloor -3$ |
+| 15   | Linear Complexity              | 110/111     | 0.818179     | -                               |
 
-​		在测试时，将 $20MB$ 的哈希输出按 $n=1,500,000$ 进行拆分
+注：
+
+1. 表示该检测度量有多个指标
+2. 表示该指标的 $p$ 值过小，表示 $p$ 值分布不提示均匀分布
+
+
 
 
 #### Diffusion Test
@@ -247,8 +252,34 @@ $$
 - 输入串 $M$，计算哈希值 $H_1$ ，对于 $M$ 我们选取 Wikipedia 中对海绵结构的介绍                         
 
   > In cryptography, a sponge function or sponge construction is any of a class of algorithms with finite internal state that take an input bit stream of any length and produce an output bit stream of any desired length. Sponge functions have both theoretical and practical uses. They can be used to model or implement many cryptographic primitives, including cryptographic hashes, message authentication codes, mask generation functions, stream ciphers, pseudo-random number generators, and authenticated encryption.
+  > Sponge functions have both theoretical and practical uses. In theoretical cryptanalysis, a random sponge function is a sponge construction where f is a random permutation or transformation, as appropriate. Random sponge functions capture more of the practical limitations of cryptographic primitives than does the widely used random oracle model, in particular the finite internal state.
 
-- 
+- 对串 $M$ 随机选取一位进行翻转，然后再计算哈希值 $H'$ 
+- 计算 $H$ 和 $H'$ 中不同有位数的数量 $B_i$
+
+将上述过程在 $SHA-RNN$ 算法中重复 $N=10,000$ 次，结果如下图所示
+
+<img src="https://s1.ax1x.com/2022/05/15/ORaSz9.png" style="zoom: 33%;" />
+
+定量计算
+
+1. 改变位数的最小值
+
+​      $B_{\min }=\min \left(\left\{B_{i}\right\}_{i=1, \ldots, N}\right)$
+
+2. 改变位数的最大值
+    $B_{\max }=\max \left(\left\{B_{i}\right\}_{i=1, \ldots, N}\right)$
+3. 改变位数的标准差
+    $\Delta B=\sqrt{\frac{1}{N-1} \sum_{i=1}^{N}\left(B_{i}-\bar{B}\right)^{2}}$
+4. 改变位数的平均值
+    $\bar{B}=\frac{1}{N} \sum_{i=1}^{N} B_{i}$
+5. 每位的改变概率
+    $P=\left(\frac{\bar{B}}{80}\right) \times 100 \%$
+
+
+| 最小值 | 最大值 | 标准差 | 平均值 | 每位变化概率 |
+| ------ | ------ | ------ | ------ | ------------ |
+| 21     | 50     | 4.14   | 35.00  | 43.75%       |
 
 #### DSTMap
 

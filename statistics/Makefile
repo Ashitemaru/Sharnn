@@ -1,3 +1,3 @@
 gen:
-	g++ test_zero.cpp -o main 
+	g++ sample.cpp -o main 
 	# ./main
