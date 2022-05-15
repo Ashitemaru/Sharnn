@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.10.1)
 project(SHA-RNN)
 
 IF (NOT CMAKE_BUILD_TYPE)
@@ -10,18 +10,16 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 INCLUDE_DIRECTORIES(include)
 
-SET(SOURCES
-        src/Bitset.hpp
-        src/ByteStream.hpp
-        src/ChaoticMap.hpp
-        src/ChaoticSystem.hpp
-        src/NonLinear.hpp
-        src/PaddedStream.hpp
-        src/RNN.hpp
-        src/RNNHash.hpp
-        src/SpongeFunction.hpp
-        src/SpongeHash.hpp
-        src/util.hpp)
+SET(SOURCES main.cpp)
 
-ADD_EXECUTABLE(${PROJECT_NAME} main.cpp ${SOURCES})
-ADD_EXECUTABLE(testbench src/testbench.cpp ${SOURCES})
+ADD_EXECUTABLE(SHA-RNN main.cpp)
+TARGET_INCLUDE_DIRECTORIES(SHA-RNN PUBLIC src)
+
+function(ADD_TEST TEST_NAME)
+    ADD_EXECUTABLE(${TEST_NAME} test/${TEST_NAME}.cpp)
+    TARGET_INCLUDE_DIRECTORIES(${TEST_NAME} PUBLIC src)
+endfunction()
+
+ADD_TEST(test1)
+ADD_TEST(test2)
+ADD_TEST(test3)
