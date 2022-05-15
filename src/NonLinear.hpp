@@ -6,13 +6,9 @@
 
 #include "ChaoticSystem.hpp"
 
-
-
 template <int N, int O, typename std::enable_if<N % 5 == 0, bool>::type = true>
 class NonLinear {
 public:
-    static constexpr int INPUT_N = N / 5;
-
     explicit NonLinear(int nr, ChaoticSystem *cs) : nr(nr), cs(cs) {
     }
 
@@ -26,28 +22,15 @@ public:
             mul ^= (mul >> 32);
             h[0][i % 5] ^= mul;
         }
-        for (int i = 0; i < 5; i++) {
-            LOG("%08x ", h[0][i]);
-        }
-        LOG("\n");
+
         for (int i = 0; i < nr; i++) {
             nl_5to8(h[i % 2], h[(i + 1) % 2]);
-            for (int j = 0; j < 8; j++) {
-                LOG("%08x ", h[(i + 1) % 2][j]);
-            }
-            LOG("\n");
         }
         for (int count = 0, i = 0; count < O; count += 8, i++) {
             int copy_count = std::min(8, O - count);
             std::copy_n(h[(i + nr) % 2], copy_count, output + count);
             nl_5to8(h[(i + nr) % 2], h[(i + nr + 1) % 2]);
         }
-
-        LOG("Non-Linear Layer output: ");
-        for (int i = 0; i < O; i++) {
-            LOG("%08x ", output[i]);
-        }
-        LOG("\n");
     }
 
 private:

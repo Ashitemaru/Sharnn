@@ -47,17 +47,12 @@ public:
         HM = IV;
 
         // Absorbing
-        LOG("Absorbing...\n");
         bool finished;
         do {
             finished = stream.next_block(MB.ptr());
             uint32_t km = last_perf.size == 0 ? 2333 : HM.lsb() + 1;
-            LOG("Input size: %d\n", last_perf.size);
-            LOG("MB: %s\n", MB.to_hex_string().c_str());
             HM ^= MB;
-            LOG("HM i-1: %s\n", HM.to_hex_string().c_str());
             sponge_F(HM, km);
-            LOG("HM i: %s\n", HM.to_hex_string().c_str());
             last_perf.size += r;
         } while (!finished);
 

@@ -25,11 +25,6 @@ public:
             }
             prev = output[i] = neuron(msg, prev, cs->next(), cs->next());
         }
-        LOG("RNN Layer output: ");
-        for (int i = 0; i < NEURON_N; i++) {
-            LOG("%08x ", output[i]);
-        }
-        LOG("\n");
     }
 
 private:
@@ -45,16 +40,7 @@ private:
         uint32_t f1 = mul(msg[0], cs->next()) + mul(msg[1], cs->next()) +
                       mul(msg[2], cs->next()) + prev;
         uint32_t f2 = mul(msg[3], cs->next()) + mul(msg[4], cs->next()) + prev;
-        LOG("Neuron: IN: %08x %08x %08x %08x %08x PREV: %08x F: %08x "
-            "%08x\n",
-            msg[0],
-            msg[1],
-            msg[2],
-            msg[3],
-            msg[4],
-            prev,
-            f1,
-            f2);
+
         for (int i = 0; i < ITER_N; i++) {
             f1 = dst(f1, q_dst);
         }
@@ -63,7 +49,6 @@ private:
         }
 
         uint64_t out = f1 ^ f2;
-        LOG("Neuron: %08x %08x %08x %08x %08x\n", q_dst, f1, q_dpwlc, f2, out);
 
         return f1 ^ f2;
     }

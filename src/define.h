@@ -23,12 +23,6 @@
 
 using byte = uint8_t;
 
-#ifndef NDEBUG
-#define LOG(...) printf(__VA_ARGS__)
-#else
-#define LOG
-#endif
-
 inline uint32_t mul(uint32_t a, uint32_t b) {
     uint64_t r = ((uint64_t) a) * b;
     return r ^ (r >> 32);
