@@ -52,10 +52,10 @@ void flip_test() {
         out ^= original;
         record << out.one_count() << std::endl;
         // if (out.one_count() == 0) {
-        //     std::fstream opt {"out.bin"};
-        //     // record << new_stream;
-        //     // record << "click !" << std::endl;
-        //     record  << new_stream << std::endl;
+        //     std::fstream opt {"1.bin"};
+        //     std::ofstream ori{"2.bin"};
+        //     opt  << new_stream << std::endl;
+        //     ori  << stream << std::endl;
         //     exit(0);
         // }
 
