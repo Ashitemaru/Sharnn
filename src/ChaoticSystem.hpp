@@ -2,6 +2,7 @@
 
 #include "../include/define.h"
 #include "ChaoticMap.hpp"
+#include "../include/define.h"
 
 class ChaoticSystem {
 public:

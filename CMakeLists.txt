@@ -21,4 +21,3 @@ ADD_TEST(test1)
 ADD_TEST(test2)
 ADD_TEST(test3)
 ADD_TEST(test4)
-
