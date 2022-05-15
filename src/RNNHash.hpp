@@ -18,7 +18,7 @@ public:
 
         rnn.forward(h, wo);
 
-        shift(wo, 140, 200);
+        shift(wo, 24, 40);
 
         nl.forward(wo, out);
 
@@ -35,36 +35,30 @@ private:
                           nl_nr = 8;
     uint32_t wo[10]{}, out[50]{};
 
-    static void reverse(uint32_t *d, int length) {
-        // d is 1600 bit
-        uint8_t t[200];
-
-        // copy d to t
-        for (int i = 0; i < length / 4; i++) {
-            t[i*4+0] = (d[i] & 0xFF000000) >> 24;
-            t[i*4+1] = (d[i] & 0x00FF0000) >> 16;
-            t[i*4+2] = (d[i] & 0x0000FF00) >> 8;
-            t[i*4+3] = (d[i] & 0x000000FF);
-        }
-
-        // reverse t
-        for (int i = 0; i < length / 4; i++) {
-            t[i*4+0] ^= t[length-1-i*4+0];
-            t[i*4+1] ^= t[length-1-i*4+1];
-            t[i*4+2] ^= t[length-1-i*4+2];
-            t[i*4+3] ^= t[length-1-i*4+3];
-        }
-
-        // copy t to d
-        for (int i = 0; i < length / 4; i++) {
-            d[i] = (t[i*4+0] << 24) | (t[i*4+1] << 16) | (t[i*4+2] << 8) | t[i*4+3];
-        }
-
-    }
 
     static void shift(uint32_t *d, int length, int total_length) {
-        reverse(d, length);
-        reverse((d + length/4), (total_length - length));
-        reverse(d, total_length);
+
+        uint8_t t[200];
+        for (int i = 0; i < 50; i++) {
+            t[i * 4 + 0] = (d[i] & 0xFF000000) >> 24;
+            t[i * 4 + 1] = (d[i] & 0x00FF0000) >> 16;
+            t[i * 4 + 2] = (d[i] & 0x0000FF00) >> 8;
+            t[i * 4 + 3] = (d[i] & 0x000000FF);
+        }
+
+        uint8_t tmp[200];
+        for(int i = 0; i < total_length - length; ++i) {
+            tmp[i] = t[i + length];
+        }
+        for(int i = 0; i < length; ++i) {
+            tmp[i + total_length - length] = t[i];
+        }
+
+        for(int i = 0; i < 50; ++i) {
+            d[i] = ((uint32_t)tmp[i * 4 + 0] << 24) |
+                    ((uint32_t)tmp[i * 4 + 1] << 16) |
+                    ((uint32_t)tmp[i * 4 + 2] << 8) |
+                   (uint32_t)tmp[i * 4 + 3];
+        }
     }
 };

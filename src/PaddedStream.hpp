@@ -29,10 +29,10 @@ public:
         }
 
         // Debug: print the block[0:block_size] to stdout
-        for (int i = 0; i < block_size; ++i) {
-            std::cout << std::bitset<8>(block[i]) << " ";
-        }
-        std::cout << std::endl;
+//        for (int i = 0; i < block_size; ++i) {
+//            std::cout << std::bitset<8>(block[i]) << " ";
+//        }
+//        std::cout << std::endl;
 
 
         return finished;
