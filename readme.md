@@ -217,9 +217,9 @@ $$
 
 ​		我们使用NIST提供的 [Statistical Test Suite](https://csrc.nist.gov/Projects/Random-Bit-Generation/Documentation-and-Software) 对哈希结果的随机性进行检测。
 
-​		首先生成哈希序列。在 $[0,2^{31}-1)$ 中从零开始均匀选取 $2^{21}$ 个数字，将数字对应的 $32$ 位整数作为输入进行哈希，得到 $20MB$ 输出。使用  NIST Statistical Test Suite 基于多种度量进行随机性测试。默认参数选择 $n=1,500,000$ 可符合大部分测试的要求，按文档[6] 要求使用其他参数的，在下表最后一列注明。
+​		首先生成哈希序列。在 $[0,2^{31}-1)$ 中从零开始均匀选取 $2^{21}$ 个数字，将数字对应的 $32$ 位整数作为输入进行哈希，得到 $20MB$ 输出。使用  NIST Statistical Test Suite 基于多种度量进行随机性测试。默认参数选择 $n=1,500,000$ 可符合大部分测试的要求，按文档 [6] 要求使用其他参数的，在下表最后一列注明。
 
-| 编号 | 测试类型                       | 通过率      | p值均匀性    | 非默认参数                      |
+| 编号 | 测试类型                       | 通过率      | p 值均匀性   | 非默认参数                      |
 | ---- | ------------------------------ | ----------- | ------------ | ------------------------------- |
 | 01   | Frequency                      | 111/111     | 0.580520     | -                               |
 | 02   | Block Frequency                | 20758/20971 | 0.273558     | $n=8000,M=80$                   |
@@ -263,18 +263,12 @@ $$
 
 定量计算
 
-1. 改变位数的最小值
+1. 改变位数的最小值 $B_{\min }=\min \left(\left\{B_{i}\right\}_{i=1, \ldots, N}\right)$
 
-​      $B_{\min }=\min \left(\left\{B_{i}\right\}_{i=1, \ldots, N}\right)$
-
-2. 改变位数的最大值
-    $B_{\max }=\max \left(\left\{B_{i}\right\}_{i=1, \ldots, N}\right)$
-3. 改变位数的标准差
-    $\Delta B=\sqrt{\frac{1}{N-1} \sum_{i=1}^{N}\left(B_{i}-\bar{B}\right)^{2}}$
-4. 改变位数的平均值
-    $\bar{B}=\frac{1}{N} \sum_{i=1}^{N} B_{i}$
-5. 每位的改变概率
-    $P=\left(\frac{\bar{B}}{80}\right) \times 100 \%$
+2. 改变位数的最大值 $B_{\max }=\max \left(\left\{B_{i}\right\}_{i=1, \ldots, N}\right)$
+3. 改变位数的标准差 $\Delta B=\sqrt{\frac{1}{N-1} \sum_{i=1}^{N}\left(B_{i}-\bar{B}\right)^{2}}$
+4. 改变位数的平均值 $\bar{B}=\frac{1}{N} \sum_{i=1}^{N} B_{i}$
+5. 每位的改变概率 $P=\left(\frac{\bar{B}}{80}\right) \times 100 \%$
 
 
 | 最小值 | 最大值 | 标准差 | 平均值 | 每位变化概率 |
@@ -302,7 +296,7 @@ $$
 
 [5] Penard W, van Werkhoven T. On the secure hash algorithm family[J]. Cryptography in context, 2008: 1-18.
 
-[6] Bassham, L. , Rukhin, A. , Soto, J. , Nechvatal, J. , Smid, M. , Leigh, S. , Levenson, M. , Vangel, M. , Heckert, N. and Banks, D. (2010), A Statistical Test Suite for Random and Pseudorandom Number Generators for Cryptographic Applications, Special Publication (NIST SP), National Institute of Standards and Technology, Gaithersburg, MD.
+[6] Smid E B, Leigh S, Levenson M, et al. A statistical test suite for random and pseudorandom number generators for cryptographic applications[J]. Her research interest includes Computer security, secure operating systems, Access control, Distributed systems, Intrusion detection systems, 2010.
 
 
 
@@ -329,7 +323,8 @@ bin/SHA-RNN -s <string> # (3) Hash string
 │   ├── SHA-RNN # 主程序
 │   ├── test1 # Basic Usage Test
 │   ├── test2 # Consistency Test
-│   └── test3 # Perf Test
+│   ├── test3 # Perf Test
+│   └── test4 # Diffusion Test
 ├── include
 │   └── define.h
 ├── main.cpp
@@ -345,9 +340,17 @@ bin/SHA-RNN -s <string> # (3) Hash string
 │   ├── RNN.hpp # RNN 架构
 │   ├── RNNHash.hpp # 派生自 SpongeHash，负责调用 RNN 架构的逻辑
 │   └── SpongeHash.hpp # 海绵结构
+├── statistics
+│   ├── Makefile
+│   ├── analyze.ipynb #　 扩散数据分析
+│   ├── diffusion.cpp # 扩散数据生成
+│   ├── eval.py # NIST 随机性测试脚本
+│   ├── sample.cpp # 随机性测试采样
+│   └── text.in # 扩散测试样本数据
 └── test
     ├── test1.cpp # Basic Usage Test
     ├── test2.cpp # Consistency Test
-    └── test3.cpp # Perf Test
+    ├── test3.cpp # Perf Test
+    └── test4.cpp # Diffusion Test
 ```
 
