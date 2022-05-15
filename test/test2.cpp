@@ -22,6 +22,7 @@ int main() {
     out1 = rnn_hash(input);
     for (int i = 0; i < 64; i++) {
         std::stringstream input{str};
+        RNNHash rnn_hash;
         out2 = rnn_hash(input);
         if (out1 != out2) {
             std::cerr << "Test Failed" << std::endl;

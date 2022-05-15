@@ -1,4 +1,4 @@
-if [[ ! -d build ]]; then
+if [ ! -d build ]; then
     echo "Deleting existing build directory"
 else
     rm -rf build
