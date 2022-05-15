@@ -2,9 +2,5 @@
 cmake-build-*/
 bin/
 build/
-<<<<<<< HEAD
 .vscode/*
 assess
-=======
-.vscode/
->>>>>>> origin/master
