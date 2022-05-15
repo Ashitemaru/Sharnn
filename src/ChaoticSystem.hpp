@@ -2,10 +2,7 @@
 
 #include "../include/define.h"
 #include "ChaoticMap.hpp"
-<<<<<<< HEAD
 #include "../include/define.h"
-=======
->>>>>>> origin/master
 
 class ChaoticSystem {
 public:

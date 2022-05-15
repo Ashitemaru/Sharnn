@@ -8,7 +8,7 @@ const int k = 21;
 const int delta = 1 << (32 - k);
 
 int main() {
-    int val {1};
+    int val {0};
     std::ofstream f {"sample.out"};
     auto p {(char *) &val};
     for (int i = 0; i < (1 << k); ++i) {
