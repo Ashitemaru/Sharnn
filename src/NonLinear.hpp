@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../include/define.h"
 #include "ChaoticSystem.hpp"
 
@@ -14,9 +15,7 @@ public:
             h[0][i] = h[1][i] = 0;
         }
         for (int i = 0; i < N; i++) {
-            uint64_t mul = ((uint64_t) cs->next()) * input[i];
-            mul ^= (mul >> 32);
-            h[0][i % 5] ^= mul;
+            h[0][i % 5] ^= mul(cs->next(), input[i]);
         }
 
         for (int i = 0; i < nr; i++) {
