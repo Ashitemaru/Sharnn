@@ -4,6 +4,12 @@
 #include "Bitset.hpp"
 #include "ChaoticSystem.hpp"
 
+#ifndef NDEBUG
+#define LOG(...) printf(__VA_ARGS__)
+#else
+#define LOG
+#endif
+
 template <int b, typename std::enable_if<b % 20 == 0, bool>::type = true>
 class RNN {
 public:
@@ -31,9 +37,9 @@ private:
                     uint32_t prev,
                     uint32_t q_dst,
                     uint32_t q_dpwlc) {
-        uint32_t f1 = msg[0] * cs->next() + msg[1] * cs->next() +
-                      msg[2] * cs->next() + prev;
-        uint32_t f2 = msg[3] * cs->next() + msg[4] * cs->next() + prev;
+        uint32_t f1 = mul(msg[0], cs->next()) + mul(msg[1], cs->next()) +
+                      mul(msg[2], cs->next()) + prev;
+        uint32_t f2 = mul(msg[3], cs->next()) + mul(msg[4], cs->next()) + prev;
 
         for (int i = 0; i < ITER_N; i++) {
             f1 = dst(f1, q_dst);
@@ -41,6 +47,8 @@ private:
         for (int i = 0; i < ITER_N; i++) {
             f2 = dpwlc(f2, q_dpwlc);
         }
+
+        uint64_t out = f1 ^ f2;
 
         return f1 ^ f2;
     }
