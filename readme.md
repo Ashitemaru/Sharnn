@@ -243,3 +243,48 @@ $$
 
 ## Appendix: Introduction to Codebase
 
+实验框架使用方法介绍如下：
+
+```bash
+# Build
+./run.sh 
+
+# Usage
+bin/SHA-RNN # (1) Input Mode
+bin/SHA-RNN -f <file_path> # (2) Hash file
+bin/SHA-RNN -s <string> # (3) Hash string
+```
+
+
+
+实验框架介绍如下：
+
+```
+.
+├── CMakeLists.txt
+├── bin
+│   ├── SHA-RNN # 主程序
+│   ├── test1 # Basic Usage Test
+│   ├── test2 # Consistency Test
+│   └── test3 # Perf Test
+├── include
+│   └── define.h
+├── main.cpp
+├── readme.md
+├── readme.pdf
+├── run.sh
+├── src
+│   ├── Bitset.hpp # 比特流
+│   ├── ChaoticMap.hpp # DSTMap / DPWLCMap 
+│   ├── ChaoticSystem.hpp # 混沌系统
+│   ├── NonLinear.hpp # 非线性激活层
+│   ├── PaddedStream.hpp # 对输入串填充
+│   ├── RNN.hpp # RNN 架构
+│   ├── RNNHash.hpp # 派生自 SpongeHash，负责调用 RNN 架构的逻辑
+│   └── SpongeHash.hpp # 海绵结构
+└── test
+    ├── test1.cpp # Basic Usage Test
+    ├── test2.cpp # Consistency Test
+    └── test3.cpp # Perf Test
+```
+
