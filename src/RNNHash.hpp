@@ -6,7 +6,7 @@
 
 
 
-class RNNHash : public SpongeHash<136, 64, 200> {
+class RNNHash : public SpongeHash<136, 64, 10> {
 public:
     RNNHash() : SpongeHash(HM_t{}) {
     }
