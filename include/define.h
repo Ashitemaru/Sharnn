@@ -15,6 +15,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #define MAX_READ_IN_LEN 65536  // In bytes.
 #define HASH_OUT_LEN 80        // In bits.

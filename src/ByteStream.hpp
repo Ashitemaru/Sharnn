@@ -1,6 +1,6 @@
 #pragma once
 
-#include "define.h"
+#include "../include/define.h"
 
 class ByteStream {
 private:

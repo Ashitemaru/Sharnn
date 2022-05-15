@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ByteStream.hpp"
-#include "define.h"
+#include "../include/define.h"
 
 class SpongeFunction {
 private:
