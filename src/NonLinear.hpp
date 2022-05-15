@@ -1,8 +1,6 @@
 #pragma once
 
-#include <algorithm>
-#include <cstdint>
-#include <type_traits>
+#include "../include/define.h"
 
 template <int N, int O, typename std::enable_if<N % 5 == 0, bool>::type = true>
 class NonLinear {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cassert>
+#include "../include/define.h"
 
 // Discrete Skew Tent map
 template <int N>

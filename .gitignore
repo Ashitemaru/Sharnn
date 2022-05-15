@@ -1,6 +1,6 @@
 .idea/
 cmake-build-*/
 bin/
-build/*
+build/
 .vscode/*
 assess
