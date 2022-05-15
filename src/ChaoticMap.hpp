@@ -9,10 +9,7 @@ class DSTmap {
 
 public:
     uint32_t operator()(uint32_t ks, uint32_t q) {
-        uint64_t x = ks;
-
-        assert(0 < q && q < twoN);
-        assert(0 < x && x < twoN);
+        uint64_t x = ks == 0 ? 1 : ks;
 
         if (x < q) {
             return (x << N) / q;
