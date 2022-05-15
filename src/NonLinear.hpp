@@ -2,7 +2,9 @@
 
 #include <algorithm>
 #include <cstdint>
+#include "define.h"
 #include <type_traits>
+#include <bitset>
 
 template <int N, int O, typename std::enable_if<N % 5 == 0, bool>::type = true>
 class NonLinear {
@@ -13,6 +15,17 @@ public:
     }
 
     void forward(uint32_t *input, uint32_t *output) {
+
+        // Debug: Here I want to see H in binary. H: uint32_t, 320 bits.
+        std::cout << "In NonLinear.hpp: forward" << std::endl;
+        for(int i = 0; i < 10; ++i) {
+            std::cout << std::bitset<32>(input[i]) << " ";
+        }
+        std::cout << std::endl;
+        std::cout << "End of NonLinear.hpp: forward" << std::endl;
+
+
+
         uint32_t h[INPUT_N * 8];
         for (int i = 0; i < INPUT_N; i++) {
             auto i_ptr = input + i * 5, o_ptr = h + i * 8;
