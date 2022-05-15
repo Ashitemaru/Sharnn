@@ -4,14 +4,13 @@
 
 <center>Anonymous Authors</center>
 
-**[摘要]** 在这次作业中我们提出了一种新的 Hash Function —— SHA-RNN。其以海绵结构为基础，融合了混沌系统与循环神经网络的特点，可以接受任意长度的串作为输入，并生成长度为 80 比特的消息摘要。我们会对我们的架构进行详细表述，并给出在时间及安全性上的自评估结果。最后，我们会提供完整的实验框架与使用说明。
+​		**[摘要]** 在这次作业中我们提出了一种新的 Hash Function —— SHA-RNN。其以海绵结构为基础，融合了混沌系统与循环神经网络的特点，可以接受任意长度的串作为输入，并生成长度为 80 比特的消息摘要。我们会对我们的架构进行详细表述，并给出在时间及安全性上的自评估结果。最后，我们会提供完整的实验框架与使用说明。
 
 > GitHub Repo 地址：https://github.com/Ashitemaru/Sharnn
 
-
-[TOC]
-
 <!--more-->
+
+
 
 
 ## Introduction
@@ -157,7 +156,7 @@ F_2 \leftarrow J_{i4} \times W_4 + J_{i5} \times W_5
 $$
 接着，分别迭代 20 次 $F_1 \leftarrow \phi_{Q_2}(F_1)$，$F_2 \leftarrow \rho_{Q_1}(F_2)$，这里 $\phi = \text{DSTMap}$，$\rho = \text{DPWLCMap}$，最后我们返回 $F_1 \oplus F_2$，这里返回长度为 32 比特。
 
-![RNNCell.drawio](https://s2.loli.net/2022/05/15/1akRr4t8vbZTKqA.png)
+<img src="https://s2.loli.net/2022/05/15/1akRr4t8vbZTKqA.png" alt="RNNCell.drawio" style="zoom:67%;" />
 
 <center>Figure 3.2.3.1: RNN Cell 计算流程</center>
 
@@ -202,7 +201,9 @@ $$
 
 我们对于大小分别为 $1$ MB, $2$ MB, $4$ MB, $8$ MB, $\cdots$, $1$ GB 的数据做了效率检验（详见单元测试的 test3 程序），得出的结果如下：
 
-![1](https://s2.loli.net/2022/05/15/VaNOWKe8pvQCcXL.png)
+<img src="https://s2.loli.net/2022/05/15/VaNOWKe8pvQCcXL.png" alt="1" style="zoom:50%;" />
+
+<center>Figure 4.1.1 效率测试结果</center>
 
 我们的实验环境为：
 
@@ -220,7 +221,7 @@ $$
 
 #### DSTMap
 
-![image-20220514222253677](https://s2.loli.net/2022/05/14/UOcxGS9DXVHZR2z.png)
+<img src="https://s2.loli.net/2022/05/14/UOcxGS9DXVHZR2z.png" alt="image-20220514222253677" style="zoom:50%;" />
 
 ​		我们混沌系统采用的发生函数 $\text{DSTMap}_Q$ 可以很好地起到生成均匀分布的数据的目的。我们这里对 STMap 做了实验，取 $\mu = 1, Q=0.3$，然后对输出函数 $\text{STMap}_{0.3}$ 做傅里叶变换后得到上图，可以看出数据具有较强的随机性，满足均匀分布的条件。
 
