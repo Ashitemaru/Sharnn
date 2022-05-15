@@ -77,6 +77,5 @@ public:
 
 private:
     HM_t HM{}, IV, MB{};
-    int block_count = 0;
     PerfInfo last_perf{};
 };
