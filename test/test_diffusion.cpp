@@ -5,8 +5,8 @@
 #include <iostream>
 #include <algorithm>
 
-#include "../src/RNNHash.hpp"
-#include "../include/define.h"
+#include "RNNHash.hpp"
+#include "define.h"
 
 const int flip_count {10000};
 

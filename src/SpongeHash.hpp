@@ -1,12 +1,8 @@
 #pragma once
 
-<<<<<<< HEAD
-#include "../include/define.h"
-=======
 #include <chrono>
 #include <type_traits>
 
->>>>>>> origin/master
 #include "Bitset.hpp"
 #include "PaddedStream.hpp"
 

@@ -242,7 +242,13 @@ $$
 
 #### Diffusion Test
 
+为了度量哈希的扩散效果，我们对 $SHA-RNN$ 算法进行了扩散测试
 
+- 输入串 $M$，计算哈希值 $H_1$ ，对于 $M$ 我们选取 Wikipedia 中对海绵结构的介绍                         
+
+  > In cryptography, a sponge function or sponge construction is any of a class of algorithms with finite internal state that take an input bit stream of any length and produce an output bit stream of any desired length. Sponge functions have both theoretical and practical uses. They can be used to model or implement many cryptographic primitives, including cryptographic hashes, message authentication codes, mask generation functions, stream ciphers, pseudo-random number generators, and authenticated encryption.
+
+- 
 
 #### DSTMap
 
