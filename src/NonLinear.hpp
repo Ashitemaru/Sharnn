@@ -1,6 +1,12 @@
 #pragma once
 
+#include <algorithm>
+#include <cstdint>
 #include "../include/define.h"
+#include <type_traits>
+#include <bitset>
+
+
 #include "ChaoticSystem.hpp"
 
 template <int N, int O, typename std::enable_if<N % 5 == 0, bool>::type = true>
