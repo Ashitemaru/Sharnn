@@ -6,9 +6,9 @@
 #include <algorithm>
 
 #include "../src/RNNHash.hpp"
-#include "../src/define.h"
+#include "../include/define.h"
 
-const int flip_count {50000};
+const int flip_count {5000};
 
 
 void flip_test() {
@@ -29,8 +29,8 @@ void flip_test() {
     
     RNNHash h;
     RNNHash::Out_t original = h(ssbuf);
-    record << stream << std::endl;
-    record << original.to_binary_string() << std::endl << std::endl;
+    // record << stream << std::endl;
+    // record << original.to_binary_string() << std::endl << std::endl;
 
 
     for (int i = 0; i < flip_count; i++) {
@@ -46,14 +46,18 @@ void flip_test() {
 
         RNNHash hash;
         RNNHash::Out_t out = hash(input);
-        // record << new_stream << std::endl;
+        // std::cerr << new_stream << std::endl;
         // record << "flip byte: " << byte_r << "; bit: " << bit_r << std::endl;
         // record << out.to_binary_string() << std::endl;
         out ^= original;
-        // record << out.one_count() << std::endl << std::endl;
-        if (out.one_count() == 0) {
-            record << byte_r << ','<< bit_r << std::endl;
-        }
+        record << out.one_count() << std::endl;
+        // if (out.one_count() == 0) {
+        //     std::fstream opt {"out.bin"};
+        //     // record << new_stream;
+        //     // record << "click !" << std::endl;
+        //     record  << new_stream << std::endl;
+        //     exit(0);
+        // }
 
         *byte_buf = ~ ((*byte_buf) | (0xff ^ (1 << bit_r))) | ((*byte_buf) & (0xff ^ (1 << bit_r)));
     }
