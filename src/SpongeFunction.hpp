@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 #include "ByteStream.hpp"
 #include "define.h"
 
