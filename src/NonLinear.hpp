@@ -1,14 +1,11 @@
 #pragma once
 
-<<<<<<< HEAD
 #include <algorithm>
 #include <cstdint>
 #include "define.h"
 #include <type_traits>
 #include <bitset>
-=======
-#include "../include/define.h"
->>>>>>> 3bb6de01f4124a7124c752ecd63656eacbfa2453
+
 
 template <int N, int O, typename std::enable_if<N % 5 == 0, bool>::type = true>
 class NonLinear {
