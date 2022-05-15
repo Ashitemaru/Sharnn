@@ -1,6 +1,5 @@
 #include "src/RNNHash.hpp"
 
-
 void print_usage() {
     std::cout << "Wrong parameters! Example Usage:\n";
     std::cout << "    (1) ./SHA-RNN\n";
@@ -13,7 +12,8 @@ int main(int argc, char **argv) {
     RNNHash rnn_hash;
 
     if (argc == 1) {
-        std::cout << "You are entering input mode! After you finished inputting, press ^D to exit!\n";
+        std::cout << "You are entering input mode! After you finished "
+                     "inputting, press ^D to exit!\n";
         out = rnn_hash(std::cin);
     } else if (argc == 3) {
         if (strcmp(argv[1], "-f") == 0) {
@@ -33,8 +33,9 @@ int main(int argc, char **argv) {
 
     auto perf = rnn_hash.last_perf_info();
     std::cout << "Hash = " << out.to_hex_string() << std::endl;
-    std::cout << "Size = " << perf.size << " bytes (after padding)" << std::endl;
-    if(argc == 3) {
+    std::cout << "Size = " << perf.size << " bytes (after padding)"
+              << std::endl;
+    if (argc == 3) {
         std::cout << "Time = " << perf.time << " ms" << std::endl;
         std::cout << "Speed = " << perf.speed << " Mbps" << std::endl;
     }

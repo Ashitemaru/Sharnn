@@ -1,6 +1,5 @@
-#include <random>
-
-#include "RNNHash.hpp"
+#include "../include/define.h"
+#include "../src/RNNHash.hpp"
 
 void generate(std::stringstream &ss, uint64_t size) {
     static std::random_device dev;

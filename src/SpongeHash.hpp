@@ -1,11 +1,8 @@
 #pragma once
 
-#include <type_traits>
-#include <chrono>
-
+#include "../include/define.h"
 #include "Bitset.hpp"
 #include "PaddedStream.hpp"
-#include "define.h"
 
 template <int r, int c, int o>
 class SpongeHash {
