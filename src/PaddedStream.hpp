@@ -1,8 +1,6 @@
 #pragma once
-#include <cstdint>
-#include <iostream>
 
-using byte = uint8_t;
+#include "../include/define.h"
 
 // multi-rate padding
 class PaddedStream {

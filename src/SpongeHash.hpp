@@ -1,8 +1,6 @@
 #pragma once
 
-#include <type_traits>
-#include <chrono>
-
+#include "../include/define.h"
 #include "Bitset.hpp"
 #include "PaddedStream.hpp"
 

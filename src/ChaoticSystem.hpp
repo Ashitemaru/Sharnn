@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ChaoticMap.hpp"
 
 class ChaoticSystem {

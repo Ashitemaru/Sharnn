@@ -1,9 +1,5 @@
-#include <chrono>
-#include <iostream>
-#include <random>
-#include <sstream>
-
-#include "RNNHash.hpp"
+#include "../include/define.h"
+#include "../src/RNNHash.hpp"
 
 void generate_string(std::stringstream &ss, int n) {
     ss << std::hex;

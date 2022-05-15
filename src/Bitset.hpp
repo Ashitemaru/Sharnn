@@ -1,9 +1,6 @@
 #pragma once
-#include <bitset>
-#include <cstdint>
-#include <iomanip>
-#include <sstream>
-using byte = uint8_t;
+
+#include "../include/define.h"
 
 #ifdef _MSC_VER
 #include <intrin.h>
